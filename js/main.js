@@ -11,6 +11,7 @@ const MISSION_TIME_SECONDS = 60;
 document.addEventListener("DOMContentLoaded", async () => {
   const mapController = createMapController("map-container");
   const gameEngine = createGameEngine();
+  const analyticsController = createAnalyticsController();
 
   // DOM references
   const hudRound = document.getElementById("hud-round");
@@ -29,8 +30,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const coordReadout = document.getElementById("coord-readout");
   const startBtn = document.getElementById("btn-start");
   const nextBtn = document.getElementById("btn-next");
+  const analyticsBtn = document.getElementById("btn-analytics");
   const recenterBtn = document.getElementById("btn-recenter");
   const basemapBtn = document.getElementById("btn-basemap");
+  const modalBackdrop = document.getElementById("analytics-modal");
+  const modalCloseBtn = document.getElementById("btn-modal-close");
+  const modalInspectBtn = document.getElementById("btn-modal-inspect");
+  const modalReplayBtn = document.getElementById("btn-modal-replay");
 
   let missionCatalog = [];
 
@@ -85,7 +91,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     startBtn.textContent = "Play Again";
     startBtn.classList.remove("hidden");
+    analyticsBtn.classList.remove("hidden");
     nextBtn.classList.add("hidden");
+
+    analyticsController.open(state);
   }
 
   const missionTimer = createMissionTimer(MISSION_TIME_SECONDS, {
@@ -118,12 +127,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     nextBtn.classList.add("hidden");
     startBtn.classList.add("hidden");
+    analyticsBtn.classList.add("hidden");
     mapController.clearRoundOverlays();
     mapController.setCrosshairMode(true);
   }
 
   function handleStartGame() {
     if (missionCatalog.length === 0) return;
+    analyticsController.close();
     const state = gameEngine.start(missionCatalog);
     mapController.resetView();
     renderMission(state);
@@ -195,7 +206,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Event Handler 3: Start / Next / Map tool buttons
+  // Event Handler 3: Button & modal keyboard controls
   startBtn.addEventListener("click", handleStartGame);
 
   nextBtn.addEventListener("click", () => {
@@ -203,6 +214,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     mapController.resetView();
     renderMission(state);
     missionTimer.resume();
+  });
+
+  analyticsBtn.addEventListener("click", () => {
+    analyticsController.open(gameEngine.getState());
+  });
+
+  modalCloseBtn.addEventListener("click", analyticsController.close);
+  modalInspectBtn.addEventListener("click", analyticsController.close);
+  modalReplayBtn.addEventListener("click", handleStartGame);
+
+  modalBackdrop.addEventListener("click", (event) => {
+    if (event.target === modalBackdrop) {
+      analyticsController.close();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modalBackdrop.classList.contains("hidden")) {
+      analyticsController.close();
+    }
   });
 
   recenterBtn.addEventListener("click", () => {

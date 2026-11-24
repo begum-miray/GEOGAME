@@ -72,6 +72,9 @@
         <button id="btn-next" type="button" class="btn btn-accent hidden">
           Next Target →
         </button>
+        <button id="btn-analytics" type="button" class="btn btn-secondary hidden">
+          View Mission Analytics
+        </button>
         <div class="map-tools">
           <button id="btn-recenter" type="button" class="btn btn-secondary">
             Reset View
@@ -96,11 +99,61 @@
     <span>Basemap: CartoDB &amp; OpenStreetMap contributors</span>
   </footer>
 
+  <!-- Post-game Chart.js Spatial Analytics Modal -->
+  <div id="analytics-modal" class="modal-backdrop hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-title">Mission Spatial Debrief</h2>
+          <p id="modal-subtitle" class="modal-subtitle">Round-by-round spatial accuracy &amp; scoring analysis</p>
+        </div>
+        <button id="btn-modal-close" type="button" class="modal-close" aria-label="Close analytics modal">&times;</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Final Score</span>
+          <span id="stat-final-score" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Hit Accuracy</span>
+          <span id="stat-accuracy" class="stat-value">0/0 (0%)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg. Error</span>
+          <span id="stat-avg-error" class="stat-value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg. Response</span>
+          <span id="stat-avg-time" class="stat-value">—</span>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="performance-chart" aria-label="Spatial error and score per round chart"></canvas>
+        <p id="chart-empty-notice" class="chart-empty hidden">
+          No guesses were submitted before the mission ended.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-modal-inspect" type="button" class="btn btn-secondary">
+          Inspect Map
+        </button>
+        <button id="btn-modal-replay" type="button" class="btn btn-primary">
+          Play Again
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/timer.js"></script>
   <script src="js/game.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/analytics.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
