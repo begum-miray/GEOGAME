@@ -3,22 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GeoGame — GMT 458</title>
+  <title>Quake &amp; Landmark Radar — GMT 458 GeoGame</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header id="app-header">
-    <h1>GeoGame</h1>
+    <div class="brand">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <div>
+        <h1>Quake &amp; Landmark Radar</h1>
+        <p class="brand-subtitle">Spatial Clue &amp; Coordinate Challenge</p>
+      </div>
+    </div>
+
+    <div class="hud-bar" aria-label="Game Status">
+      <div class="hud-item">
+        <span class="hud-label">Round</span>
+        <span id="hud-round" class="hud-value">0 / 10</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Time</span>
+        <span id="hud-timer" class="hud-value">60s</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Score</span>
+        <span id="hud-score" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Lives</span>
+        <span id="hud-lives" class="hud-value" aria-label="3 lives remaining">♥♥♥</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">Best</span>
+        <span id="hud-highscore" class="hud-value">0</span>
+      </div>
+    </div>
   </header>
 
   <main id="app-main">
-    <section id="map-container" aria-label="Game Map"></section>
+    <aside id="mission-panel" aria-label="Mission Briefing">
+      <div class="panel-header">
+        <span id="difficulty-badge" class="badge">Level 1 · Global</span>
+        <span id="target-category" class="category-tag">Ready</span>
+      </div>
+
+      <h2 id="mission-title">Radar Standby</h2>
+      <p id="mission-clue" class="mission-clue">
+        Use geographic clues to pinpoint seismic zones and iconic world landmarks on the map before time runs out.
+      </p>
+
+      <div id="feedback-box" class="feedback-box" aria-live="polite">
+        Interactive map is ready. Click anywhere on the map to inspect coordinates.
+      </div>
+
+      <div class="panel-actions">
+        <button id="btn-start" type="button" class="btn btn-primary" disabled>
+          Start Mission (Coming Soon)
+        </button>
+        <div class="map-tools">
+          <button id="btn-recenter" type="button" class="btn btn-secondary">
+            Reset View
+          </button>
+          <button id="btn-basemap" type="button" class="btn btn-secondary">
+            Switch Basemap
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <section id="map-wrapper" aria-label="Interactive Map Area">
+      <div id="map-container" role="region" aria-label="GeoGame Map"></div>
+      <div id="coord-readout" class="coord-readout" aria-live="off">
+        Lat: 20.00°, Lon: 15.00°
+      </div>
+    </section>
   </main>
 
   <footer id="app-footer">
-    <p>GMT 458 – Web GIS | GeoGame Project</p>
+    <span>GMT 458 – Web GIS | GeoGame Project</span>
+    <span>Basemap: CartoDB &amp; OpenStreetMap contributors</span>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/map.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
