@@ -6,14 +6,19 @@ const LEVEL_LABELS = {
   3: "Level 3 · Precision",
 };
 
+const MISSION_TIME_SECONDS = 60;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const mapController = createMapController("map-container");
   const gameEngine = createGameEngine();
 
   // DOM references
   const hudRound = document.getElementById("hud-round");
+  const hudTimer = document.getElementById("hud-timer");
   const hudScore = document.getElementById("hud-score");
   const hudLives = document.getElementById("hud-lives");
+  const hudHighScore = document.getElementById("hud-highscore");
+  const timerProgressFill = document.getElementById("timer-progress-fill");
   const difficultyBadge = document.getElementById("difficulty-badge");
   const targetCategory = document.getElementById("target-category");
   const missionPanel = document.getElementById("mission-panel");
@@ -36,11 +41,62 @@ document.addEventListener("DOMContentLoaded", async () => {
     hudLives.setAttribute("aria-label", `${lives} lives remaining`);
   }
 
+  function renderTimer(remainingSeconds, totalSeconds = MISSION_TIME_SECONDS) {
+    hudTimer.textContent = `${remainingSeconds}s`;
+    const ratio = Math.max(0, Math.min(100, (remainingSeconds / totalSeconds) * 100));
+    timerProgressFill.style.width = `${ratio}%`;
+
+    const isUrgent = remainingSeconds > 0 && remainingSeconds <= 10;
+    hudTimer.classList.toggle("urgent", isUrgent);
+    timerProgressFill.classList.toggle("urgent", isUrgent);
+  }
+
   function triggerAnimation(element, className) {
     element.classList.remove(className);
     void element.offsetWidth;
     element.classList.add(className);
   }
+
+  function renderGameOverSummary(state) {
+    missionTimer.stop();
+    mapController.setCrosshairMode(false);
+    hudHighScore.textContent = state.highScore.toLocaleString();
+
+    const hits = state.results.filter((r) => r.isHit).length;
+    let reasonText = "All 10 rounds completed!";
+    if (state.endReason === "no_lives") {
+      reasonText = "All lives lost.";
+    } else if (state.endReason === "timeout") {
+      reasonText = "Time's up! 60-second radar window expired.";
+      feedbackBox.className = "feedback-box miss";
+      triggerAnimation(missionPanel, "panel-shake");
+      feedbackBox.innerHTML =
+        `<strong>Time Expired!</strong> ${reasonText}<br/>` +
+        `Final Score: <strong>${state.score.toLocaleString()}</strong> ` +
+        `(${hits}/${state.results.length} targets locked) · Best: <strong>${state.highScore.toLocaleString()}</strong>.`;
+    }
+
+    if (state.endReason !== "timeout") {
+      feedbackBox.innerHTML +=
+        `<br/><br/><strong>Mission Complete:</strong> ${reasonText} ` +
+        `Final Score: <strong>${state.score.toLocaleString()}</strong> ` +
+        `(${hits}/${state.results.length} hits) · Best: <strong>${state.highScore.toLocaleString()}</strong>.`;
+    }
+
+    startBtn.textContent = "Play Again";
+    startBtn.classList.remove("hidden");
+    nextBtn.classList.add("hidden");
+  }
+
+  const missionTimer = createMissionTimer(MISSION_TIME_SECONDS, {
+    onTick: (remaining, total) => {
+      renderTimer(remaining, total);
+    },
+    onExpire: () => {
+      const state = gameEngine.endByTimeout();
+      renderGameOverSummary(state);
+    },
+  });
 
   function renderMission(state) {
     const mission = state.currentMission;
@@ -48,16 +104,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     hudRound.textContent = `${state.round} / ${state.totalRounds}`;
     hudScore.textContent = state.score.toLocaleString();
+    hudHighScore.textContent = state.highScore.toLocaleString();
     renderLives(state.lives, state.maxLives);
 
     difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Level ${mission.level}`;
     targetCategory.textContent = mission.category === "seismic" ? "Seismic Zone" : "Landmark";
     missionTitle.textContent = `Target #${state.round}`;
-    missionMeta.textContent = `Tolerance Radius: ${mission.maxToleranceKm} km · Region Hint Locked`;
+    missionMeta.textContent = `Tolerance Radius: ${mission.maxToleranceKm} km · Precision Bonus: +3s`;
     missionClue.textContent = mission.clue;
 
     feedbackBox.className = "feedback-box";
-    feedbackBox.textContent = "Click on the map to lock in your coordinate guess.";
+    feedbackBox.textContent = "Click on the map to lock in your coordinate guess before time runs out.";
 
     nextBtn.classList.add("hidden");
     startBtn.classList.add("hidden");
@@ -70,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const state = gameEngine.start(missionCatalog);
     mapController.resetView();
     renderMission(state);
+    missionTimer.start();
   }
 
   // Event Handler 1: Map mousemove for live geographic coordinate tracking
@@ -83,8 +141,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currentState = gameEngine.getState();
     if (currentState.phase !== "playing") return;
 
+    const elapsedSeconds = missionTimer.getRoundElapsedSeconds();
+    missionTimer.pause();
+
     const { lat, lng } = event.latlng;
-    const evaluation = gameEngine.evaluateGuess(lat, lng);
+    const evaluation = gameEngine.evaluateGuess(lat, lng, elapsedSeconds);
     if (!evaluation) return;
 
     const { record, target, state } = evaluation;
@@ -93,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     mapController.showGuessResult(event.latlng, target, record.distanceKm, record.isHit);
 
     hudScore.textContent = state.score.toLocaleString();
+    hudHighScore.textContent = state.highScore.toLocaleString();
     renderLives(state.lives, state.maxLives);
     missionTitle.textContent = target.name;
     missionMeta.textContent =
@@ -100,11 +162,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (record.isHit) {
       triggerAnimation(hudScore, "score-pop");
+
+      const bonuses = [];
+      if (record.speedBonus > 0) bonuses.push(`+${record.speedBonus} speed`);
+      if (record.streakBonus > 0) bonuses.push(`+${record.streakBonus} streak`);
+      if (record.timeBonusSeconds > 0) {
+        missionTimer.addBonusSeconds(record.timeBonusSeconds);
+        bonuses.push(`+${record.timeBonusSeconds}s time`);
+        hudTimer.classList.add("bonus-flash");
+        setTimeout(() => hudTimer.classList.remove("bonus-flash"), 700);
+      }
+      const bonusText = bonuses.length > 0 ? ` (${bonuses.join(", ")})` : "";
+
       feedbackBox.className = "feedback-box hit";
-      const streakText = record.streakBonus > 0 ? ` (+${record.streakBonus} streak!)` : "";
       feedbackBox.innerHTML =
-        `<strong>Target Locked!</strong> ${record.distanceKm.toLocaleString()} km away ` +
-        `(+${record.points.toLocaleString()} pts${streakText})<br/>` +
+        `<strong>Target Locked!</strong> ${record.distanceKm.toLocaleString()} km away in ${record.elapsedSeconds}s ` +
+        `(+${record.points.toLocaleString()} pts${bonusText})<br/>` +
         `<span class="mission-fact">${target.fact}</span>`;
     } else {
       triggerAnimation(missionPanel, "panel-shake");
@@ -116,15 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (state.phase === "game_over") {
-      const hits = state.results.filter((r) => r.isHit).length;
-      const reason = state.lives <= 0 ? "All lives lost." : "All 10 rounds completed!";
-      feedbackBox.innerHTML +=
-        `<br/><br/><strong>Mission Complete:</strong> ${reason} ` +
-        `Final Score: <strong>${state.score.toLocaleString()}</strong> (${hits}/${state.results.length} hits).`;
-
-      startBtn.textContent = "Play Again";
-      startBtn.classList.remove("hidden");
-      nextBtn.classList.add("hidden");
+      renderGameOverSummary(state);
     } else {
       nextBtn.classList.remove("hidden");
     }
@@ -137,6 +202,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const state = gameEngine.nextRound();
     mapController.resetView();
     renderMission(state);
+    missionTimer.resume();
   });
 
   recenterBtn.addEventListener("click", () => {
@@ -150,6 +216,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // Initialize persisted high score and timer display
+  hudHighScore.textContent = gameEngine.getState().highScore.toLocaleString();
+  renderTimer(MISSION_TIME_SECONDS, MISSION_TIME_SECONDS);
+
   // Load GeoJSON mission dataset
   try {
     const dataset = await loadMissionDataset();
@@ -160,7 +230,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     startBtn.disabled = false;
     feedbackBox.textContent =
       `GeoJSON ready: ${missionCatalog.length} targets ` +
-      `(${seismicCount} seismic, ${landmarkCount} landmarks). Press "Start Mission" to begin!`;
+      `(${seismicCount} seismic, ${landmarkCount} landmarks). You have ${MISSION_TIME_SECONDS}s — press "Start Mission"!`;
   } catch (error) {
     console.error(error);
     feedbackBox.textContent =
