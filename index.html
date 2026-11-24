@@ -52,17 +52,21 @@
       </div>
 
       <h2 id="mission-title">Radar Standby</h2>
+      <p id="mission-meta" class="mission-meta">Tolerance Radius: —</p>
       <p id="mission-clue" class="mission-clue">
         Use geographic clues to pinpoint seismic zones and iconic world landmarks on the map before time runs out.
       </p>
 
       <div id="feedback-box" class="feedback-box" aria-live="polite">
-        Interactive map is ready. Click anywhere on the map to inspect coordinates.
+        Loading GeoJSON mission dataset...
       </div>
 
       <div class="panel-actions">
         <button id="btn-start" type="button" class="btn btn-primary" disabled>
-          Start Mission (Coming Soon)
+          Start Mission
+        </button>
+        <button id="btn-next" type="button" class="btn btn-accent hidden">
+          Next Target →
         </button>
         <div class="map-tools">
           <button id="btn-recenter" type="button" class="btn btn-secondary">
@@ -90,6 +94,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/game.js"></script>
   <script src="js/map.js"></script>
   <script src="js/main.js"></script>
 </body>

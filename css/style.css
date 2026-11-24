@@ -161,6 +161,12 @@ body {
   font-weight: 700;
 }
 
+.mission-meta {
+  font-size: 0.78rem;
+  color: var(--accent-radar);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 .mission-clue {
   font-size: 0.9rem;
   color: #cbd5e1;
@@ -173,6 +179,37 @@ body {
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.feedback-box.hit {
+  border-color: rgba(34, 197, 94, 0.65);
+  background-color: rgba(20, 83, 45, 0.35);
+}
+
+.feedback-box.miss {
+  border-color: rgba(249, 115, 22, 0.65);
+  background-color: rgba(124, 45, 18, 0.35);
+}
+
+.mission-fact {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-accent {
+  background-color: #22c55e;
+  color: #052e16;
+}
+
+.btn-accent:hover {
+  background-color: #4ade80;
 }
 
 .panel-actions {
@@ -235,6 +272,137 @@ body {
   width: 100%;
   height: 100%;
   background-color: #0b1120;
+}
+
+#map-container.crosshair-active {
+  cursor: crosshair;
+}
+
+/* Radar pulse marker & polyline animations */
+.radar-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.radar-pin {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radar-core {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  z-index: 2;
+}
+
+.radar-ring {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: radarPulse 1.8s ease-out infinite;
+}
+
+.radar-ring.ring-2 {
+  animation-delay: 0.9s;
+}
+
+.guess-pin {
+  color: #38bdf8;
+}
+
+.guess-pin .radar-core {
+  background-color: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.target-pin {
+  color: #f97316;
+}
+
+.target-pin .radar-core {
+  background-color: #f97316;
+  box-shadow: 0 0 12px #f97316;
+}
+
+.target-pin.hit-pin {
+  color: #22c55e;
+}
+
+.target-pin.hit-pin .radar-core {
+  background-color: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+}
+
+.animated-guess-line {
+  animation: dashFlow 1.2s linear infinite;
+}
+
+.distance-tooltip {
+  background-color: rgba(15, 23, 42, 0.92);
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.score-pop {
+  animation: scorePop 0.45s ease;
+}
+
+.panel-shake {
+  animation: panelShake 0.4s ease;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+@keyframes scorePop {
+  0% {
+    transform: scale(1);
+    color: var(--text-primary);
+  }
+  45% {
+    transform: scale(1.25);
+    color: #4ade80;
+  }
+  100% {
+    transform: scale(1);
+    color: var(--text-primary);
+  }
+}
+
+@keyframes panelShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
 }
 
 .coord-readout {
