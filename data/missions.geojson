@@ -1,0 +1,239 @@
+{
+  "type": "FeatureCollection",
+  "name": "QuakeAndLandmarkMissions",
+  "metadata": {
+    "title": "Quake & Landmark Radar Mission Dataset",
+    "sources": [
+      "USGS Earthquake Hazards Program (open seismic catalog)",
+      "UNESCO World Heritage Centre (open site coordinates)",
+      "Natural Earth (open geographic reference data)"
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-122.4194, 37.7749] },
+      "properties": {
+        "id": "L1-01",
+        "name": "San Andreas Fault (San Francisco Bay)",
+        "category": "seismic",
+        "level": 1,
+        "region": "North America",
+        "source": "USGS Earthquake Hazards Program",
+        "clue": "A major right-lateral transform fault along the western coast of California, famous for the 1906 earthquake near the Golden Gate.",
+        "fact": "The San Andreas Fault marks the tectonic boundary between the Pacific Plate and the North American Plate.",
+        "maxToleranceKm": 900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [31.1342, 29.9792] },
+      "properties": {
+        "id": "L1-02",
+        "name": "Pyramids of Giza",
+        "category": "landmark",
+        "level": 1,
+        "region": "North Africa",
+        "source": "UNESCO World Heritage Centre",
+        "clue": "Ancient monumental tombs standing on a limestone plateau just west of the Nile River apex, south of the Mediterranean delta.",
+        "fact": "The Great Pyramid of Giza is the oldest of the Seven Wonders of the Ancient World.",
+        "maxToleranceKm": 900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [138.7274, 35.3606] },
+      "properties": {
+        "id": "L1-03",
+        "name": "Mount Fuji",
+        "category": "seismic",
+        "level": 1,
+        "region": "East Asia",
+        "source": "USGS & UNESCO World Heritage Centre",
+        "clue": "An iconic symmetrical stratovolcano on Honshu Island along the Pacific Ring of Fire, southwest of Tokyo.",
+        "fact": "Mount Fuji sits near a triple junction where the Amurian, Okhotsk, and Philippine Sea plates meet.",
+        "maxToleranceKm": 900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [147.6992, -18.2871] },
+      "properties": {
+        "id": "L1-04",
+        "name": "Great Barrier Reef",
+        "category": "landmark",
+        "level": 1,
+        "region": "Oceania",
+        "source": "UNESCO World Heritage Centre",
+        "clue": "The world's largest coral reef system, stretching over 2,300 km along the Coral Sea off the northeastern coast of Australia.",
+        "fact": "Comprising over 2,900 individual reefs, it is the largest living structure visible from space.",
+        "maxToleranceKm": 900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-72.5450, -13.1631] },
+      "properties": {
+        "id": "L1-05",
+        "name": "Machu Picchu",
+        "category": "landmark",
+        "level": 1,
+        "region": "South America",
+        "source": "UNESCO World Heritage Centre",
+        "clue": "A 15th-century Inca citadel perched high on an Andean mountain ridge above the Sacred Valley in southern Peru.",
+        "fact": "Inca engineers built earthquake-resistant ashlar masonry tailored to the active Andean subduction belt.",
+        "maxToleranceKm": 900
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [29.9169, 40.7654] },
+      "properties": {
+        "id": "L2-01",
+        "name": "North Anatolian Fault (İzmit Gulf)",
+        "category": "seismic",
+        "level": 2,
+        "region": "Anatolia",
+        "source": "USGS Earthquake Hazards Program",
+        "clue": "The western segment of a 1,500 km right-lateral strike-slip fault bordering the eastern edge of the Sea of Marmara.",
+        "fact": "The North Anatolian Fault accommodates the westward extrusion of the Anatolian Plate relative to Eurasia.",
+        "maxToleranceKm": 550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-21.9426, 64.1466] },
+      "properties": {
+        "id": "L2-02",
+        "name": "Mid-Atlantic Ridge (Reykjavík)",
+        "category": "seismic",
+        "level": 2,
+        "region": "North Atlantic",
+        "source": "USGS & Natural Earth",
+        "clue": "A subarctic volcanic island capital where the divergent boundary between the North American and Eurasian plates rises above sea level.",
+        "fact": "At nearby Þingvellir, the two tectonic plates drift apart by roughly 2 centimeters every year.",
+        "maxToleranceKm": 550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [86.9250, 27.9881] },
+      "properties": {
+        "id": "L2-03",
+        "name": "Mount Everest (Himalayan Collision)",
+        "category": "landmark",
+        "level": 2,
+        "region": "South Asia",
+        "source": "Natural Earth",
+        "clue": "Earth's highest peak above sea level, uplifted by the ongoing continental collision of the Indian and Eurasian plates along the Nepal–Tibet border.",
+        "fact": "Tectonic uplift still pushes the Himalayas upward by several millimeters each year.",
+        "maxToleranceKm": 550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [142.3720, 38.2970] },
+      "properties": {
+        "id": "L2-04",
+        "name": "Tohoku Subduction Zone",
+        "category": "seismic",
+        "level": 2,
+        "region": "Northwest Pacific",
+        "source": "USGS Earthquake Hazards Program",
+        "clue": "An offshore megathrust zone east of Sendai along the Japan Trench where the 2011 Mw 9.1 earthquake and tsunami originated.",
+        "fact": "The 2011 rupture shifted parts of Honshu island eastward by more than 2 meters.",
+        "maxToleranceKm": 550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-5.3536, 36.1408] },
+      "properties": {
+        "id": "L2-05",
+        "name": "Strait of Gibraltar",
+        "category": "landmark",
+        "level": 2,
+        "region": "Western Mediterranean",
+        "source": "Natural Earth",
+        "clue": "A narrow maritime chokepoint separating the Iberian Peninsula from North Africa and linking the Atlantic Ocean to the Mediterranean Sea.",
+        "fact": "At its narrowest point, Europe and Africa are only about 14 kilometers apart.",
+        "maxToleranceKm": 550
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-73.2459, -39.8142] },
+      "properties": {
+        "id": "L3-01",
+        "name": "Valdivia Subduction Zone",
+        "category": "seismic",
+        "level": 3,
+        "region": "Southern Andes",
+        "source": "USGS Earthquake Hazards Program",
+        "clue": "Site of the strongest instrumentally recorded earthquake in history (Mw 9.5, 1960), along southern Chile where the Nazca Plate subducts beneath South America.",
+        "fact": "The 1960 Valdivia earthquake generated a trans-Pacific tsunami reaching Hawaii, Japan, and the Philippines.",
+        "maxToleranceKm": 300
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [34.8289, 38.6431] },
+      "properties": {
+        "id": "L3-02",
+        "name": "Cappadocia Volcanic Region",
+        "category": "landmark",
+        "level": 3,
+        "region": "Central Anatolia",
+        "source": "UNESCO World Heritage Centre",
+        "clue": "A high Central Anatolian plateau sculpted into fairy chimneys from eroded ignimbrite and volcanic tuff erupted by ancient Mount Erciyes and Hasan.",
+        "fact": "Soft volcanic tuff allowed ancient inhabitants to carve multi-level underground cities and rock churches.",
+        "maxToleranceKm": 300
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [95.3238, 5.5483] },
+      "properties": {
+        "id": "L3-03",
+        "name": "Sunda Megathrust (Banda Aceh)",
+        "category": "seismic",
+        "level": 3,
+        "region": "Southeast Asia",
+        "source": "USGS Earthquake Hazards Program",
+        "clue": "Northern tip of Sumatra bordering the Indian Ocean subduction trench that triggered the devastating 2004 Mw 9.1 Indian Ocean tsunami.",
+        "fact": "The 2004 rupture propagated roughly 1,300 km northward along the Sunda Trench.",
+        "maxToleranceKm": 300
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [35.4444, 30.3285] },
+      "properties": {
+        "id": "L3-04",
+        "name": "Petra (Dead Sea Transform)",
+        "category": "landmark",
+        "level": 3,
+        "region": "Middle East",
+        "source": "UNESCO World Heritage Centre",
+        "clue": "Rose-red sandstone rock-cut Nabataean city nestled in southern Jordan along the eastern flank of the Wadi Araba–Dead Sea Transform rift.",
+        "fact": "Petra's advanced water-conduit and dam network sustained a thriving desert metropolis.",
+        "maxToleranceKm": 300
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [37.3556, -3.0674] },
+      "properties": {
+        "id": "L3-05",
+        "name": "Mount Kilimanjaro (East African Rift)",
+        "category": "seismic",
+        "level": 3,
+        "region": "East Africa",
+        "source": "USGS & UNESCO World Heritage Centre",
+        "clue": "Africa's highest free-standing dormant volcano, rising near the Tanzania–Kenya border along the eastern branch of the East African Rift System.",
+        "fact": "The East African Rift is an active continental rift slowly splitting the African Plate into the Nubian and Somali plates.",
+        "maxToleranceKm": 300
+      }
+    }
+  ]
+}
