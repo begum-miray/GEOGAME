@@ -23,14 +23,9 @@ The idea is simple and fun: when the page opens, an animated welcome guide intro
 
 ---
 
-## 2. Frontend Layout Sketch & Live Screenshots
+## 2. Frontend Layout & Live Screenshots
 
-### Initial Frontend Layout Sketch
-Before coding the interface, I sketched the main layout with a top HUD bar, temporal progress strip, left clue sidebar, and interactive Leaflet map canvas:
-
-![Frontend Layout Wireframe Sketch](assets/images/layout-sketch.svg)
-
-### Live Game Screenshots
+The interface is organized around a top HUD bar (`Tur`, `Süre`, `Puan`, `Can`, `Rekor`), a shrinking temporal progress bar, a pastel-pink mission & clue sidebar on the left, and a full-height Leaflet map centered on Turkey on the right.
 
 **Animated Welcome & "Nasıl Oynanır?" Screen:**
 
@@ -124,7 +119,6 @@ GEOGAME/
 │   └── missions.geojson              # 15 Turkish cultural, natural & seismic GeoJSON points
 └── assets/
     └── images/
-        ├── layout-sketch.svg         # Initial frontend wireframe sketch
         ├── screenshot-welcome.png    # Animated "Nasıl Oynanır?" startup screen
         └── screenshot-gameplay.png   # Active Turkey map gameplay screen
 ```
