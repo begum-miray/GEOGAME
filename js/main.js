@@ -344,6 +344,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     feedbackBox.textContent =
       `GeoJSON hazır: ${missionCatalog.length} hedef ` +
       `(${seismicCount} sismik bölge, ${landmarkCount} coğrafi nokta). ${MISSION_TIME_SECONDS} saniyen var — "Oyuna Başla"ya tıkla!`;
+
+    if (new URLSearchParams(window.location.search).has("play")) {
+      handleStartGame();
+    }
   } catch (error) {
     console.error(error);
     feedbackBox.textContent =
