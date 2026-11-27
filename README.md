@@ -36,7 +36,7 @@ Before coding the interface, I sketched the main layout with a top HUD bar, temp
 
 ![Welcome and How to Play Screen](assets/images/screenshot-welcome.png)
 
-**Active Gameplay on the Turkey Map (White Student-Friendly UI):**
+**Active Gameplay on the Turkey Map (Soft Pastel-Pink & White UI):**
 
 ![Active Turkey Map Gameplay](assets/images/screenshot-gameplay.png)
 

@@ -129,10 +129,10 @@ function createMapController(containerId) {
 
     L.circle(targetLatLng, {
       radius: target.maxToleranceKm * 1000,
-      color: isHit ? "#16a34a" : "#2563eb",
+      color: isHit ? "#16a34a" : "#ec4899",
       weight: 2,
       dashArray: "6 6",
-      fillColor: isHit ? "#22c55e" : "#60a5fa",
+      fillColor: isHit ? "#22c55e" : "#f472b6",
       fillOpacity: 0.16,
     }).addTo(roundLayer);
 
