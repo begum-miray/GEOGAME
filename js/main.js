@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const difficultyBadge = document.getElementById("difficulty-badge");
   const targetCategory = document.getElementById("target-category");
   const missionPanel = document.getElementById("mission-panel");
+  const roundStepper = document.getElementById("round-stepper");
+  const streakPill = document.getElementById("streak-pill");
   const missionTitle = document.getElementById("mission-title");
   const missionMeta = document.getElementById("mission-meta");
   const missionClue = document.getElementById("mission-clue");
@@ -45,6 +47,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     const empty = "♡".repeat(Math.max(0, maxLives - lives));
     hudLives.textContent = filled + empty;
     hudLives.setAttribute("aria-label", `${lives} lives remaining`);
+  }
+
+  function renderRoundStepper(state) {
+    const total = state.totalRounds || 10;
+    roundStepper.innerHTML = "";
+    for (let i = 0; i < total; i += 1) {
+      const dot = document.createElement("span");
+      dot.className = "step-dot";
+      const result = state.results[i];
+      if (result) {
+        dot.classList.add(result.isHit ? "hit" : "miss");
+      } else if (state.phase === "playing" && i === state.round - 1) {
+        dot.classList.add("active");
+      }
+      roundStepper.appendChild(dot);
+    }
+  }
+
+  function renderStreak(streak) {
+    if (streak >= 2) {
+      streakPill.textContent = `${streak}x Streak`;
+      streakPill.classList.remove("hidden");
+    } else {
+      streakPill.classList.add("hidden");
+    }
   }
 
   function renderTimer(remainingSeconds, totalSeconds = MISSION_TIME_SECONDS) {
@@ -115,6 +142,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     hudScore.textContent = state.score.toLocaleString();
     hudHighScore.textContent = state.highScore.toLocaleString();
     renderLives(state.lives, state.maxLives);
+    renderRoundStepper(state);
+    renderStreak(state.streak);
 
     difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Level ${mission.level}`;
     targetCategory.textContent = mission.category === "seismic" ? "Seismic Zone" : "Landmark";
@@ -167,6 +196,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     hudScore.textContent = state.score.toLocaleString();
     hudHighScore.textContent = state.highScore.toLocaleString();
     renderLives(state.lives, state.maxLives);
+    renderRoundStepper(state);
+    renderStreak(state.streak);
     missionTitle.textContent = target.name;
     missionMeta.textContent =
       `Actual: ${target.lat.toFixed(2)}°, ${target.lon.toFixed(2)}° · ${target.region}`;
@@ -233,6 +264,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !modalBackdrop.classList.contains("hidden")) {
       analyticsController.close();
+      return;
+    }
+    if (
+      (event.key === "Enter" || event.key === " ") &&
+      !nextBtn.classList.contains("hidden") &&
+      modalBackdrop.classList.contains("hidden")
+    ) {
+      event.preventDefault();
+      nextBtn.click();
     }
   });
 
@@ -247,8 +287,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Initialize persisted high score and timer display
-  hudHighScore.textContent = gameEngine.getState().highScore.toLocaleString();
+  // Initialize persisted high score, round stepper, and timer display
+  const initialState = gameEngine.getState();
+  hudHighScore.textContent = initialState.highScore.toLocaleString();
+  renderRoundStepper(initialState);
   renderTimer(MISSION_TIME_SECONDS, MISSION_TIME_SECONDS);
 
   // Load GeoJSON mission dataset

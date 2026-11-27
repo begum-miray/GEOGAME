@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quake &amp; Landmark Radar — GMT 458 GeoGame</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  />
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -55,11 +61,20 @@
         <span id="target-category" class="category-tag">Ready</span>
       </div>
 
-      <h2 id="mission-title">Radar Standby</h2>
+      <div id="round-stepper" class="round-stepper" aria-label="Round Progress"></div>
+
+      <div class="title-row">
+        <h2 id="mission-title">Radar Standby</h2>
+        <span id="streak-pill" class="streak-pill hidden" aria-live="polite">0x Streak</span>
+      </div>
+
       <p id="mission-meta" class="mission-meta">Tolerance Radius: —</p>
-      <p id="mission-clue" class="mission-clue">
-        Use geographic clues to pinpoint seismic zones and iconic world landmarks on the map before time runs out.
-      </p>
+      <div class="clue-card">
+        <span class="clue-label">Spatial Clue</span>
+        <p id="mission-clue" class="mission-clue">
+          Use geographic clues to pinpoint seismic zones and iconic world landmarks on the map before time runs out.
+        </p>
+      </div>
 
       <div id="feedback-box" class="feedback-box" aria-live="polite">
         Loading GeoJSON mission dataset...
@@ -70,7 +85,7 @@
           Start Mission
         </button>
         <button id="btn-next" type="button" class="btn btn-accent hidden">
-          Next Target →
+          Next Target → <kbd class="kbd-hint">Enter</kbd>
         </button>
         <button id="btn-analytics" type="button" class="btn btn-secondary hidden">
           View Mission Analytics
@@ -88,6 +103,11 @@
 
     <section id="map-wrapper" aria-label="Interactive Map Area">
       <div id="map-container" role="region" aria-label="GeoGame Map"></div>
+      <div class="map-legend" aria-label="Map Legend">
+        <span class="legend-item"><i class="legend-dot dot-guess"></i>Guess</span>
+        <span class="legend-item"><i class="legend-dot dot-hit"></i>Hit</span>
+        <span class="legend-item"><i class="legend-dot dot-miss"></i>Target</span>
+      </div>
       <div id="coord-readout" class="coord-readout" aria-live="off">
         Lat: 20.00°, Lon: 15.00°
       </div>

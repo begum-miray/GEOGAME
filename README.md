@@ -120,10 +120,9 @@ GEOGAME/
 
 ## 7. What I Learned from AI
 
-During the design and step-by-step development of this GeoGame with AI assistance (Google Gemini / Antigravity):
-- **Modular Closure Architecture:** Learned how to structure vanilla JavaScript applications without frameworks by encapsulating state inside factory closures (`createGameEngine`, `createMissionTimer`, `createMapController`, `createAnalyticsController`) rather than relying on global variables.
-- **GeoJSON vs. Leaflet Coordinate Order:** Reinforced the practical distinction between RFC 7946 GeoJSON `[longitude, latitude]` coordinate arrays and Leaflet's `[latitude, longitude]` API, and how to normalize coordinates cleanly in a dedicated data loader.
-- **Spatial Computation & Geovisualisation:** Practiced implementing the Haversine great-circle distance formula, combining Leaflet `DivIcon` CSS keyframe animations with `L.circle` tolerance zones and `flyToBounds`, and integrating a dual-axis Chart.js visualization with proper canvas instance cleanup.
-- **Disciplined Git Workflow:** Practiced atomic, feature-scoped commits (`1 feature = 1 commit`) with descriptive Conventional Commit messages and multi-line English bodies.
-
-**AI Interaction URL:** *(Add shared AI conversation link here if applicable — developed iteratively via Google Antigravity / Gemini workspace session.)*
+Key Web GIS and JavaScript concepts reinforced through AI-assisted learning:
+- **JavaScript Closures for State Encapsulation:** Understanding how factory functions (`createGameEngine`, `createMissionTimer`, `createMapController`, `createAnalyticsController`) preserve private state across callbacks without relying on mutable global variables.
+- **GeoJSON vs. Leaflet Coordinate Order:** Learning the distinction between RFC 7946 GeoJSON `[longitude, latitude]` coordinate arrays and Leaflet's `[latitude, longitude]` convention.
+- **Haversine Great-Circle Distance:** Understanding spherical trigonometry on Earth's radius (`R = 6,371 km`) to compute geodesic error distances between two coordinate pairs.
+- **Leaflet Overlays & Chart.js Lifecycle:** Learning how custom `L.divIcon` markers combine with CSS `@keyframes` animations, and why existing `Chart` instances must be destroyed before re-rendering on the same `<canvas>`.
+- **Atomic Git Commits:** Learning Conventional Commit structure and how to keep each feature isolated in a clean, descriptive commit.
