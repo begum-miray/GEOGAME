@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const streakPill = document.getElementById("streak-pill");
   const missionTitle = document.getElementById("mission-title");
   const missionMeta = document.getElementById("mission-meta");
+  const clueCard = document.getElementById("clue-card");
   const missionClue = document.getElementById("mission-clue");
   const feedbackBox = document.getElementById("feedback-box");
   const coordReadout = document.getElementById("coord-readout");
@@ -208,6 +209,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     missionTitle.textContent = `Soru #${state.round}`;
     missionMeta.textContent = `Bölge: ${mission.region} · Tolerans: ${mission.maxToleranceKm} km`;
     missionClue.textContent = mission.clue;
+    triggerAnimation(clueCard, "card-enter");
 
     feedbackBox.className = "feedback-box";
     feedbackBox.textContent = "Türkiye haritasında tahmin ettiğin yere tıkla! 🎯";

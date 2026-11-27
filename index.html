@@ -14,7 +14,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
   />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
 </head>
 <body>
   <header id="app-header">
@@ -75,8 +75,8 @@
       </div>
 
       <p id="mission-meta" class="mission-meta">Bölge: Türkiye · Tolerans: —</p>
-      <div class="clue-card">
-        <span class="clue-label">📌 İpucu</span>
+      <div id="clue-card" class="clue-card">
+        <span class="clue-label">✨ Mekansal İpucu</span>
         <p id="mission-clue" class="mission-clue">
           Türkiye'nin ünlü yerlerini, doğa harikalarını ve fay hatlarını 60 saniye içinde haritada işaretleyerek puan topla!
         </p>
@@ -87,21 +87,21 @@
       </div>
 
       <div class="panel-actions">
-        <button id="btn-start" type="button" class="btn btn-primary" disabled>
-          🚀 Oyuna Başla
+        <button id="btn-start" type="button" class="btn btn-primary btn-shimmer" disabled>
+          <span class="btn-ico">🚀</span> Oyuna Başla
         </button>
-        <button id="btn-next" type="button" class="btn btn-green hidden">
-          ➡️ Sonraki Soru <span class="kbd-hint">Enter</span>
+        <button id="btn-next" type="button" class="btn btn-green btn-pulse hidden">
+          <span class="btn-ico">➡️</span> Sonraki Soru <span class="kbd-hint">Enter</span>
         </button>
         <button id="btn-analytics" type="button" class="btn btn-yellow hidden">
-          📊 Sonuç Grafiğimi Gör
+          <span class="btn-ico">📊</span> Sonuç Grafiğimi Gör
         </button>
         <div class="map-tools">
           <button id="btn-recenter" type="button" class="btn btn-outline">
-            🧭 Türkiye'ye Dön
+            <span class="btn-ico">🧭</span> Türkiye'ye Dön
           </button>
           <button id="btn-basemap" type="button" class="btn btn-outline">
-            🗺️ Harita Değiştir
+            <span class="btn-ico">🗺️</span> Harita Değiştir
           </button>
         </div>
       </div>
@@ -172,8 +172,8 @@
         <button id="btn-welcome-explore" type="button" class="btn btn-outline">
           Önce Haritaya Bak
         </button>
-        <button id="btn-welcome-start" type="button" class="btn btn-primary btn-lg" disabled>
-          🚀 Hadi Başlayalım!
+        <button id="btn-welcome-start" type="button" class="btn btn-primary btn-lg btn-shimmer" disabled>
+          <span class="btn-ico">🚀</span> Hadi Başlayalım!
         </button>
       </div>
     </div>
@@ -229,11 +229,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-  <script src="js/data.js?v=5"></script>
-  <script src="js/timer.js?v=5"></script>
-  <script src="js/game.js?v=5"></script>
-  <script src="js/map.js?v=5"></script>
-  <script src="js/analytics.js?v=5"></script>
-  <script src="js/main.js?v=5"></script>
+  <script src="js/data.js?v=6"></script>
+  <script src="js/timer.js?v=6"></script>
+  <script src="js/game.js?v=6"></script>
+  <script src="js/map.js?v=6"></script>
+  <script src="js/analytics.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
 </body>
 </html>
