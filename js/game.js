@@ -1,7 +1,7 @@
 // Core game engine with Haversine spatial distance, scoring, and localStorage high score
 
 const EARTH_RADIUS_KM = 6371;
-const INITIAL_LIVES = 3;
+const INITIAL_LIVES = 4;
 const HIGH_SCORE_KEY = "geogame_quake_radar_highscore";
 
 function toRadians(degrees) {

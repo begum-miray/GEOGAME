@@ -169,9 +169,9 @@ function createAnalyticsController() {
 
     let reasonLabel = "Görev Tamamlandı — 10 hedefin tamamı değerlendirildi";
     if (state.endReason === "timeout") {
-      reasonLabel = "60 Saniyelik Radar Süresi Doldu";
+      reasonLabel = "2 Dakikalık Süre Doldu";
     } else if (state.endReason === "no_lives") {
-      reasonLabel = "Oyun Bitti — 3 can hakkı tükendi";
+      reasonLabel = "Oyun Bitti — 4 can hakkı tükendi";
     }
 
     subtitleEl.textContent = reasonLabel;

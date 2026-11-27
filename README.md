@@ -10,7 +10,7 @@
 
 For GMT 458 – Web GIS Assignment 2, I designed and built **Türkiye Harita Avı** (*Turkey Map Hunt*), a fun, interactive, Turkey-based GeoGame built with HTML, CSS, and vanilla JavaScript. The interface and clues are in Turkish so anyone can jump in and play right away, while the source code and documentation are in English.
 
-The idea is simple and fun: when the page opens, an animated welcome guide introduces the rules. Once you start, you have **60 seconds** to find 10 famous Turkish landmarks, natural wonders, and active fault/volcanic zones on a clean, label-free **Turkey map**. After every click, the game calculates how many kilometers away you clicked using the **Haversine formula**, animates radar pulse rings and a dashed distance line, celebrates hits with confetti and a floating score toast, and teaches a short fact about that location.
+The idea is simple and fun: when the page opens, an animated welcome guide introduces the rules. Once you start, you have **2 minutes (120 seconds)** to find 10 famous Turkish landmarks, natural wonders, and active fault/volcanic zones on a clean, label-free **Turkey map**. After every click, the game calculates how many kilometers away you clicked using the **Haversine formula**, animates radar pulse rings and a dashed distance line, celebrates hits with confetti and a floating score toast, and teaches a short fact about that location.
 
 ### Functional Requirements
 1. **Turkey-Focused Interactive Map:** Render a responsive Leaflet map centered and bounded on Turkey (`[39.05, 35.25]`, zoom `6`) using a clean white label-free basemap (Esri World Light Gray Base), with options to switch to Esri Physical Relief or OpenStreetMap and reset back to Turkey anytime.
@@ -18,7 +18,7 @@ The idea is simple and fun: when the page opens, an animated welcome guide intro
 3. **Open Turkey GeoJSON Dataset:** Load 15 curated Turkish locations asynchronously from `data/missions.geojson` (RFC 7946 `FeatureCollection`) covering all 7 regions of Turkey (cultural landmarks, natural wonders, and seismic/volcanic zones).
 4. **Progressive Difficulty & Haversine Scoring:** Play 10 rounds across 3 levels (Easy → Medium → Hard) with shrinking tolerance radii (`220 km → 140 km → 90 km`), scoring each guess based on Haversine distance, speed, and consecutive hit streaks.
 5. **Playful Game Animations & Tactile UI:** Include 3D pushable arcade-style buttons, radar pulse rings, animated dashed distance lines, floating score toasts, confetti bursts on accurate hits, and panel shake animations on misses.
-6. **Temporal Component & Persistence:** Run a 60-second countdown timer with a live progress bar, `+3s` precision time bonuses, an urgent final-10-second warning, and `localStorage` high-score saving.
+6. **Temporal Component & Persistence:** Run a 2-minute (120-second) countdown timer with a live progress bar, `+3s` precision time bonuses, an urgent final-15-second warning, and `localStorage` high-score saving.
 7. **Post-Game Spatial Analytics (Bonus):** Display an interactive **Chart.js** dual-axis debrief chart at the end of the game comparing each round's error distance (km) and points earned.
 
 ---
@@ -51,7 +51,7 @@ Each game selects and shuffles **10 rounds** from the 15-feature Turkey GeoJSON 
 A 10-segment progress bar at the top of the left panel shows your live progress across all 10 questions (blue = active, green = hit, orange = miss).
 
 ### Number of Lives
-Players start with **3 lives (`♥♥♥`)**. Clicking outside the target's allowed tolerance radius removes 1 life and resets the hit streak. Losing all 3 lives ends the round and opens the Chart.js summary.
+Players start with **4 lives (`♥♥♥♥`)**. Clicking outside the target's allowed tolerance radius removes 1 life and resets the hit streak. Losing all 4 lives ends the round and opens the Chart.js summary.
 
 ### Scoring & High-Score Mechanism
 When your click lands inside the target's tolerance circle (`distanceKm <= maxToleranceKm`), you earn:
@@ -61,10 +61,10 @@ When your click lands inside the target's tolerance circle (`distanceKm <= maxTo
 - **High Score (`Rekor`):** Saved in `window.localStorage` (`geogame_quake_radar_highscore`) so your personal record stays saved across refreshes.
 
 ### Temporal Component & Gameplay Impact
-- Every session runs on a **60-second** timer (`js/timer.js`), displayed both in the top HUD (`Süre`) and as a shrinking bar across the screen.
+- Every session runs on a **2-minute (120-second)** timer (`js/timer.js`), displayed in `M:SS` format in the top HUD (`Süre`) and as a shrinking bar across the screen.
 - After you click, the timer **pauses** while you look at the distance line and read the short geographic fact, then **resumes** as soon as you click *Sonraki Soru* (or press `Enter` / `Space`).
-- **Precision Time Bonus (`+3 sn`):** Clicking within the innermost **35%** of the target's tolerance circle awards `+3` extra seconds (up to 60s).
-- In the last **10 seconds**, the timer turns red and pulses. When time hits `0 sn`, `endByTimeout()` finishes the game and opens the analytics modal.
+- **Precision Time Bonus (`+3 sn`):** Clicking within the innermost **35%** of the target's tolerance circle awards `+3` extra seconds (up to 2:00).
+- In the last **15 seconds**, the timer turns red and pulses. When time hits `0:00`, `endByTimeout()` finishes the game and opens the analytics modal.
 
 ---
 

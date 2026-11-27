@@ -13,7 +13,13 @@ const CATEGORY_LABELS = {
 };
 
 const CONFETTI_COLORS = ["#2563eb", "#22c55e", "#f59e0b", "#ef4444", "#a855f7", "#06b6d4"];
-const MISSION_TIME_SECONDS = 60;
+const MISSION_TIME_SECONDS = 120;
+
+function formatTimerDisplay(totalSeconds) {
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const mapController = createMapController("map-container");
@@ -130,11 +136,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderTimer(remainingSeconds, totalSeconds = MISSION_TIME_SECONDS) {
-    hudTimer.textContent = `${remainingSeconds} sn`;
+    hudTimer.textContent = formatTimerDisplay(remainingSeconds);
     const ratio = Math.max(0, Math.min(100, (remainingSeconds / totalSeconds) * 100));
     timerProgressFill.style.width = `${ratio}%`;
 
-    const isUrgent = remainingSeconds > 0 && remainingSeconds <= 10;
+    const isUrgent = remainingSeconds > 0 && remainingSeconds <= 15;
     hudTimer.classList.toggle("urgent", isUrgent);
     timerProgressFill.classList.toggle("urgent", isUrgent);
   }
@@ -153,9 +159,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const hits = state.results.filter((r) => r.isHit).length;
     let reasonText = "Harikasın! 10 sorunun tamamını bitirdin!";
     if (state.endReason === "no_lives") {
-      reasonText = "3 can hakkın tükendi, tekrar dene!";
+      reasonText = "4 can hakkın tükendi, tekrar dene!";
     } else if (state.endReason === "timeout") {
-      reasonText = "60 saniye doldu!";
+      reasonText = "2 dakika doldu!";
       feedbackBox.className = "feedback-box miss";
       triggerAnimation(missionPanel, "panel-shake");
       feedbackBox.innerHTML =
@@ -382,7 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     startBtn.disabled = false;
     welcomeStartBtn.disabled = false;
     feedbackBox.textContent =
-      `${missionCatalog.length} Türkiye noktası hazır! 60 saniyede en yüksek puanı toplamak için "Oyuna Başla"ya tıkla.`;
+      `${missionCatalog.length} Türkiye noktası hazır! 2 dakikada en yüksek puanı toplamak için "Oyuna Başla"ya tıkla.`;
 
     if (new URLSearchParams(window.location.search).has("play")) {
       handleStartGame();
