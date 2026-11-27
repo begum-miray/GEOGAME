@@ -1,7 +1,8 @@
 # Quake & Landmark Radar — GMT 458 Web GIS GeoGame
 
-**Live Application (GitHub Pages):** https://begum-miray.github.io/GEOGAME/  
-**Repository:** https://github.com/begum-miray/GEOGAME
+> **Play the Live GeoGame:** [https://begum-miray.github.io/GEOGAME/](https://begum-miray.github.io/GEOGAME/)
+>
+> **GitHub Repository:** [https://github.com/begum-miray/GEOGAME](https://github.com/begum-miray/GEOGAME)
 
 ---
 
