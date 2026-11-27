@@ -6,17 +6,17 @@ const DEFAULT_VIEW = {
 };
 
 const BASEMAPS = {
-  voyager: {
-    name: "Açık Harita (Etiketsiz)",
-    url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png",
+  positron: {
+    name: "Beyaz Harita (Etiketsiz)",
+    url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
     attribution: "&copy; OpenStreetMap katkıcıları &copy; CARTO",
     subdomains: "abcd",
   },
-  physical: {
-    name: "Fiziki Rölyef (Etiketsiz)",
-    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
-    attribution: "Tiles &copy; Esri — US National Park Service",
-    subdomains: "",
+  voyager: {
+    name: "Açık Renkli Harita (Etiketsiz)",
+    url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png",
+    attribution: "&copy; OpenStreetMap katkıcıları &copy; CARTO",
+    subdomains: "abcd",
   },
   osm: {
     name: "OpenStreetMap Standart",
@@ -26,7 +26,7 @@ const BASEMAPS = {
   },
 };
 
-const BASEMAP_ORDER = ["voyager", "physical", "osm"];
+const BASEMAP_ORDER = ["positron", "voyager", "osm"];
 
 function createRadarIcon(variant) {
   return L.divIcon({
@@ -74,10 +74,10 @@ function createMapController(containerId) {
 
     // Automatic fallback if primary tile server fails to load
     tileLayer.on("tileerror", () => {
-      if (!fallbackTriggered && key === "voyager") {
+      if (!fallbackTriggered && key === "positron") {
         fallbackTriggered = true;
-        activeIndex = BASEMAP_ORDER.indexOf("physical");
-        mountBasemap("physical");
+        activeIndex = BASEMAP_ORDER.indexOf("osm");
+        mountBasemap("osm");
       }
     });
 
