@@ -1,9 +1,9 @@
-// Main entry point & DOM/event wiring for Quake & Landmark Radar
+// Main entry point & DOM/event wiring for Deprem & Coğrafya Radarı
 
 const LEVEL_LABELS = {
-  1: "Level 1 · Global",
-  2: "Level 2 · Regional",
-  3: "Level 3 · Precision",
+  1: "Seviye 1 · Küresel",
+  2: "Seviye 2 · Bölgesel",
+  3: "Seviye 3 · Hassas",
 };
 
 const MISSION_TIME_SECONDS = 60;
@@ -30,11 +30,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const missionClue = document.getElementById("mission-clue");
   const feedbackBox = document.getElementById("feedback-box");
   const coordReadout = document.getElementById("coord-readout");
+  const helpBtn = document.getElementById("btn-help");
   const startBtn = document.getElementById("btn-start");
   const nextBtn = document.getElementById("btn-next");
   const analyticsBtn = document.getElementById("btn-analytics");
   const recenterBtn = document.getElementById("btn-recenter");
   const basemapBtn = document.getElementById("btn-basemap");
+
+  // Welcome modal references
+  const welcomeModal = document.getElementById("welcome-modal");
+  const welcomeCloseBtn = document.getElementById("btn-welcome-close");
+  const welcomeExploreBtn = document.getElementById("btn-welcome-explore");
+  const welcomeStartBtn = document.getElementById("btn-welcome-start");
+
+  // Analytics modal references
   const modalBackdrop = document.getElementById("analytics-modal");
   const modalCloseBtn = document.getElementById("btn-modal-close");
   const modalInspectBtn = document.getElementById("btn-modal-inspect");
@@ -42,11 +51,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let missionCatalog = [];
 
+  function openWelcomeModal() {
+    welcomeModal.classList.remove("hidden");
+    welcomeModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeWelcomeModal() {
+    welcomeModal.classList.add("hidden");
+    welcomeModal.setAttribute("aria-hidden", "true");
+    mapController.invalidate();
+  }
+
   function renderLives(lives, maxLives) {
     const filled = "♥".repeat(lives);
     const empty = "♡".repeat(Math.max(0, maxLives - lives));
     hudLives.textContent = filled + empty;
-    hudLives.setAttribute("aria-label", `${lives} lives remaining`);
+    hudLives.setAttribute("aria-label", `${lives} can kaldı`);
   }
 
   function renderRoundStepper(state) {
@@ -67,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderStreak(streak) {
     if (streak >= 2) {
-      streakPill.textContent = `${streak}x Streak`;
+      streakPill.textContent = `${streak}x Seri`;
       streakPill.classList.remove("hidden");
     } else {
       streakPill.classList.add("hidden");
@@ -75,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderTimer(remainingSeconds, totalSeconds = MISSION_TIME_SECONDS) {
-    hudTimer.textContent = `${remainingSeconds}s`;
+    hudTimer.textContent = `${remainingSeconds} sn`;
     const ratio = Math.max(0, Math.min(100, (remainingSeconds / totalSeconds) * 100));
     timerProgressFill.style.width = `${ratio}%`;
 
@@ -93,30 +113,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   function renderGameOverSummary(state) {
     missionTimer.stop();
     mapController.setCrosshairMode(false);
-    hudHighScore.textContent = state.highScore.toLocaleString();
+    hudHighScore.textContent = state.highScore.toLocaleString("tr-TR");
 
     const hits = state.results.filter((r) => r.isHit).length;
-    let reasonText = "All 10 rounds completed!";
+    let reasonText = "10 turun tamamı tamamlandı!";
     if (state.endReason === "no_lives") {
-      reasonText = "All lives lost.";
+      reasonText = "Tüm can hakların tükendi.";
     } else if (state.endReason === "timeout") {
-      reasonText = "Time's up! 60-second radar window expired.";
+      reasonText = "Süre doldu! 60 saniyelik radar penceresi kapandı.";
       feedbackBox.className = "feedback-box miss";
       triggerAnimation(missionPanel, "panel-shake");
       feedbackBox.innerHTML =
-        `<strong>Time Expired!</strong> ${reasonText}<br/>` +
-        `Final Score: <strong>${state.score.toLocaleString()}</strong> ` +
-        `(${hits}/${state.results.length} targets locked) · Best: <strong>${state.highScore.toLocaleString()}</strong>.`;
+        `<strong>Süre Doldu!</strong> ${reasonText}<br/>` +
+        `Toplam Puan: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
+        `(${hits}/${state.results.length} isabet) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
     }
 
     if (state.endReason !== "timeout") {
       feedbackBox.innerHTML +=
-        `<br/><br/><strong>Mission Complete:</strong> ${reasonText} ` +
-        `Final Score: <strong>${state.score.toLocaleString()}</strong> ` +
-        `(${hits}/${state.results.length} hits) · Best: <strong>${state.highScore.toLocaleString()}</strong>.`;
+        `<br/><br/><strong>Görev Tamamlandı:</strong> ${reasonText} ` +
+        `Toplam Puan: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
+        `(${hits}/${state.results.length} isabet) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
     }
 
-    startBtn.textContent = "Play Again";
+    startBtn.textContent = "Tekrar Oyna";
     startBtn.classList.remove("hidden");
     analyticsBtn.classList.remove("hidden");
     nextBtn.classList.add("hidden");
@@ -139,20 +159,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!mission) return;
 
     hudRound.textContent = `${state.round} / ${state.totalRounds}`;
-    hudScore.textContent = state.score.toLocaleString();
-    hudHighScore.textContent = state.highScore.toLocaleString();
+    hudScore.textContent = state.score.toLocaleString("tr-TR");
+    hudHighScore.textContent = state.highScore.toLocaleString("tr-TR");
     renderLives(state.lives, state.maxLives);
     renderRoundStepper(state);
     renderStreak(state.streak);
 
-    difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Level ${mission.level}`;
-    targetCategory.textContent = mission.category === "seismic" ? "Seismic Zone" : "Landmark";
-    missionTitle.textContent = `Target #${state.round}`;
-    missionMeta.textContent = `Tolerance Radius: ${mission.maxToleranceKm} km · Precision Bonus: +3s`;
+    difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Seviye ${mission.level}`;
+    targetCategory.textContent = mission.category === "seismic" ? "Sismik Bölge" : "Coğrafi Nokta";
+    missionTitle.textContent = `Hedef #${state.round}`;
+    missionMeta.textContent = `Tolerans: ${mission.maxToleranceKm} km · Hassasiyet Bonusu: +3 sn`;
     missionClue.textContent = mission.clue;
 
     feedbackBox.className = "feedback-box";
-    feedbackBox.textContent = "Click on the map to lock in your coordinate guess before time runs out.";
+    feedbackBox.textContent = "Süre dolmadan haritada tahmin ettiğin noktaya tıkla.";
 
     nextBtn.classList.add("hidden");
     startBtn.classList.add("hidden");
@@ -163,6 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function handleStartGame() {
     if (missionCatalog.length === 0) return;
+    closeWelcomeModal();
     analyticsController.close();
     const state = gameEngine.start(missionCatalog);
     mapController.resetView();
@@ -173,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Event Handler 1: Map mousemove for live geographic coordinate tracking
   mapController.map.on("mousemove", (event) => {
     const { lat, lng } = event.latlng;
-    coordReadout.textContent = `Lat: ${lat.toFixed(2)}°, Lon: ${lng.toFixed(2)}°`;
+    coordReadout.textContent = `Enlem: ${lat.toFixed(2)}°, Boylam: ${lng.toFixed(2)}°`;
   });
 
   // Event Handler 2: Map click to submit coordinate guess and evaluate Haversine distance
@@ -193,24 +214,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     mapController.setCrosshairMode(false);
     mapController.showGuessResult(event.latlng, target, record.distanceKm, record.isHit);
 
-    hudScore.textContent = state.score.toLocaleString();
-    hudHighScore.textContent = state.highScore.toLocaleString();
+    hudScore.textContent = state.score.toLocaleString("tr-TR");
+    hudHighScore.textContent = state.highScore.toLocaleString("tr-TR");
     renderLives(state.lives, state.maxLives);
     renderRoundStepper(state);
     renderStreak(state.streak);
     missionTitle.textContent = target.name;
     missionMeta.textContent =
-      `Actual: ${target.lat.toFixed(2)}°, ${target.lon.toFixed(2)}° · ${target.region}`;
+      `Gerçek Konum: ${target.lat.toFixed(2)}°, ${target.lon.toFixed(2)}° · ${target.region}`;
 
     if (record.isHit) {
       triggerAnimation(hudScore, "score-pop");
 
       const bonuses = [];
-      if (record.speedBonus > 0) bonuses.push(`+${record.speedBonus} speed`);
-      if (record.streakBonus > 0) bonuses.push(`+${record.streakBonus} streak`);
+      if (record.speedBonus > 0) bonuses.push(`+${record.speedBonus} hız`);
+      if (record.streakBonus > 0) bonuses.push(`+${record.streakBonus} seri`);
       if (record.timeBonusSeconds > 0) {
         missionTimer.addBonusSeconds(record.timeBonusSeconds);
-        bonuses.push(`+${record.timeBonusSeconds}s time`);
+        bonuses.push(`+${record.timeBonusSeconds} sn süre`);
         hudTimer.classList.add("bonus-flash");
         setTimeout(() => hudTimer.classList.remove("bonus-flash"), 700);
       }
@@ -218,15 +239,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       feedbackBox.className = "feedback-box hit";
       feedbackBox.innerHTML =
-        `<strong>Target Locked!</strong> ${record.distanceKm.toLocaleString()} km away in ${record.elapsedSeconds}s ` +
-        `(+${record.points.toLocaleString()} pts${bonusText})<br/>` +
+        `<strong>Hedef Kilitlendi!</strong> ${record.distanceKm.toLocaleString("tr-TR")} km sapma · ${record.elapsedSeconds} sn ` +
+        `(+${record.points.toLocaleString("tr-TR")} puan${bonusText})<br/>` +
         `<span class="mission-fact">${target.fact}</span>`;
     } else {
       triggerAnimation(missionPanel, "panel-shake");
       feedbackBox.className = "feedback-box miss";
       feedbackBox.innerHTML =
-        `<strong>Out of Range!</strong> ${record.distanceKm.toLocaleString()} km away ` +
-        `(max ${record.maxToleranceKm} km). -1 life.<br/>` +
+        `<strong>Menzil Dışı!</strong> ${record.distanceKm.toLocaleString("tr-TR")} km sapma ` +
+        `(maks. ${record.maxToleranceKm} km). -1 can.<br/>` +
         `<span class="mission-fact">${target.fact}</span>`;
     }
 
@@ -237,7 +258,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Event Handler 3: Button & modal keyboard controls
+  // Event Handler 3: Buttons, welcome guide & keyboard shortcuts
+  helpBtn.addEventListener("click", openWelcomeModal);
+  welcomeCloseBtn.addEventListener("click", closeWelcomeModal);
+  welcomeExploreBtn.addEventListener("click", closeWelcomeModal);
+  welcomeStartBtn.addEventListener("click", handleStartGame);
+  welcomeModal.addEventListener("click", (event) => {
+    if (event.target === welcomeModal) {
+      closeWelcomeModal();
+    }
+  });
+
   startBtn.addEventListener("click", handleStartGame);
 
   nextBtn.addEventListener("click", () => {
@@ -262,14 +293,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !modalBackdrop.classList.contains("hidden")) {
-      analyticsController.close();
-      return;
+    if (event.key === "Escape") {
+      if (!welcomeModal.classList.contains("hidden")) {
+        closeWelcomeModal();
+        return;
+      }
+      if (!modalBackdrop.classList.contains("hidden")) {
+        analyticsController.close();
+        return;
+      }
     }
+
     if (
       (event.key === "Enter" || event.key === " ") &&
       !nextBtn.classList.contains("hidden") &&
-      modalBackdrop.classList.contains("hidden")
+      modalBackdrop.classList.contains("hidden") &&
+      welcomeModal.classList.contains("hidden")
     ) {
       event.preventDefault();
       nextBtn.click();
@@ -283,13 +322,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   basemapBtn.addEventListener("click", () => {
     const activeName = mapController.toggleBasemap();
     if (gameEngine.getState().phase === "idle") {
-      feedbackBox.textContent = `Switched basemap to ${activeName}.`;
+      feedbackBox.textContent = `Harita altlığı değiştirildi: ${activeName}`;
     }
   });
 
   // Initialize persisted high score, round stepper, and timer display
   const initialState = gameEngine.getState();
-  hudHighScore.textContent = initialState.highScore.toLocaleString();
+  hudHighScore.textContent = initialState.highScore.toLocaleString("tr-TR");
   renderRoundStepper(initialState);
   renderTimer(MISSION_TIME_SECONDS, MISSION_TIME_SECONDS);
 
@@ -301,12 +340,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const landmarkCount = missionCatalog.filter((m) => m.category === "landmark").length;
 
     startBtn.disabled = false;
+    welcomeStartBtn.disabled = false;
     feedbackBox.textContent =
-      `GeoJSON ready: ${missionCatalog.length} targets ` +
-      `(${seismicCount} seismic, ${landmarkCount} landmarks). You have ${MISSION_TIME_SECONDS}s — press "Start Mission"!`;
+      `GeoJSON hazır: ${missionCatalog.length} hedef ` +
+      `(${seismicCount} sismik bölge, ${landmarkCount} coğrafi nokta). ${MISSION_TIME_SECONDS} saniyen var — "Oyuna Başla"ya tıkla!`;
   } catch (error) {
     console.error(error);
     feedbackBox.textContent =
-      "Could not load local GeoJSON dataset. Serve the project via a local server or GitHub Pages.";
+      "GeoJSON veri seti yüklenemedi. Projeyi yerel bir sunucu veya GitHub Pages üzerinden açın.";
   }
 });

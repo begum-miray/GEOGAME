@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quake &amp; Landmark Radar — GMT 458 GeoGame</title>
+  <title>Deprem &amp; Coğrafya Radarı — GMT 458 GeoGame</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -12,7 +12,7 @@
   />
   <link
     rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
   />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -21,31 +21,37 @@
     <div class="brand">
       <span class="brand-dot" aria-hidden="true"></span>
       <div>
-        <h1>Quake &amp; Landmark Radar</h1>
-        <p class="brand-subtitle">Spatial Clue &amp; Coordinate Challenge</p>
+        <h1>Deprem &amp; Coğrafya Radarı</h1>
+        <p class="brand-subtitle">Koordinat &amp; Mekansal İpucu Yarışması</p>
       </div>
     </div>
 
-    <div class="hud-bar" aria-label="Game Status">
-      <div class="hud-item">
-        <span class="hud-label">Round</span>
-        <span id="hud-round" class="hud-value">0 / 10</span>
-      </div>
-      <div class="hud-item">
-        <span class="hud-label">Time</span>
-        <span id="hud-timer" class="hud-value">60s</span>
-      </div>
-      <div class="hud-item">
-        <span class="hud-label">Score</span>
-        <span id="hud-score" class="hud-value">0</span>
-      </div>
-      <div class="hud-item">
-        <span class="hud-label">Lives</span>
-        <span id="hud-lives" class="hud-value" aria-label="3 lives remaining">♥♥♥</span>
-      </div>
-      <div class="hud-item">
-        <span class="hud-label">Best</span>
-        <span id="hud-highscore" class="hud-value">0</span>
+    <div class="header-right">
+      <button id="btn-help" type="button" class="btn btn-ghost">
+        Nasıl Oynanır?
+      </button>
+
+      <div class="hud-bar" aria-label="Oyun Durumu">
+        <div class="hud-item">
+          <span class="hud-label">Tur</span>
+          <span id="hud-round" class="hud-value">0 / 10</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Süre</span>
+          <span id="hud-timer" class="hud-value">60 sn</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Puan</span>
+          <span id="hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Can</span>
+          <span id="hud-lives" class="hud-value" aria-label="3 can kaldı">♥♥♥</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Rekor</span>
+          <span id="hud-highscore" class="hud-value">0</span>
+        </div>
       </div>
     </div>
   </header>
@@ -55,119 +61,167 @@
   </div>
 
   <main id="app-main">
-    <aside id="mission-panel" aria-label="Mission Briefing">
+    <aside id="mission-panel" aria-label="Görev Paneli">
       <div class="panel-header">
-        <span id="difficulty-badge" class="badge">Level 1 · Global</span>
-        <span id="target-category" class="category-tag">Ready</span>
+        <span id="difficulty-badge" class="badge">Seviye 1 · Küresel</span>
+        <span id="target-category" class="category-tag">Hazır</span>
       </div>
 
-      <div id="round-stepper" class="round-stepper" aria-label="Round Progress"></div>
+      <div id="round-stepper" class="round-stepper" aria-label="Tur İlerlemesi"></div>
 
       <div class="title-row">
-        <h2 id="mission-title">Radar Standby</h2>
-        <span id="streak-pill" class="streak-pill hidden" aria-live="polite">0x Streak</span>
+        <h2 id="mission-title">Radar Hazır</h2>
+        <span id="streak-pill" class="streak-pill hidden" aria-live="polite">0x Seri</span>
       </div>
 
-      <p id="mission-meta" class="mission-meta">Tolerance Radius: —</p>
+      <p id="mission-meta" class="mission-meta">Tolerans Yarıçapı: —</p>
       <div class="clue-card">
-        <span class="clue-label">Spatial Clue</span>
+        <span class="clue-label">Mekansal İpucu</span>
         <p id="mission-clue" class="mission-clue">
-          Use geographic clues to pinpoint seismic zones and iconic world landmarks on the map before time runs out.
+          Süre dolmadan harita üzerindeki sismik bölgeleri ve simgesel coğrafi noktaları ipuçlarından yararlanarak işaretle.
         </p>
       </div>
 
       <div id="feedback-box" class="feedback-box" aria-live="polite">
-        Loading GeoJSON mission dataset...
+        GeoJSON veri seti yükleniyor...
       </div>
 
       <div class="panel-actions">
         <button id="btn-start" type="button" class="btn btn-primary" disabled>
-          Start Mission
+          Oyuna Başla
         </button>
         <button id="btn-next" type="button" class="btn btn-accent hidden">
-          Next Target → <kbd class="kbd-hint">Enter</kbd>
+          Sonraki Hedef → <kbd class="kbd-hint">Enter</kbd>
         </button>
         <button id="btn-analytics" type="button" class="btn btn-secondary hidden">
-          View Mission Analytics
+          Performans Grafiğini Gör
         </button>
         <div class="map-tools">
           <button id="btn-recenter" type="button" class="btn btn-secondary">
-            Reset View
+            Haritayı Sıfırla
           </button>
           <button id="btn-basemap" type="button" class="btn btn-secondary">
-            Switch Basemap
+            Altlık Değiştir
           </button>
         </div>
       </div>
     </aside>
 
-    <section id="map-wrapper" aria-label="Interactive Map Area">
-      <div id="map-container" role="region" aria-label="GeoGame Map"></div>
-      <div class="map-legend" aria-label="Map Legend">
-        <span class="legend-item"><i class="legend-dot dot-guess"></i>Guess</span>
-        <span class="legend-item"><i class="legend-dot dot-hit"></i>Hit</span>
-        <span class="legend-item"><i class="legend-dot dot-miss"></i>Target</span>
+    <section id="map-wrapper" aria-label="İnteraktif Harita Alanı">
+      <div id="map-container" role="region" aria-label="GeoGame Haritası"></div>
+      <div class="map-legend" aria-label="Harita Lejantı">
+        <span class="legend-item"><i class="legend-dot dot-guess"></i>Tahminin</span>
+        <span class="legend-item"><i class="legend-dot dot-hit"></i>İsabet</span>
+        <span class="legend-item"><i class="legend-dot dot-miss"></i>Gerçek Konum</span>
       </div>
       <div id="coord-readout" class="coord-readout" aria-live="off">
-        Lat: 20.00°, Lon: 15.00°
+        Enlem: 20.00°, Boylam: 15.00°
       </div>
     </section>
   </main>
 
   <footer id="app-footer">
-    <span>GMT 458 – Web GIS | GeoGame Project</span>
-    <span>Basemap: CartoDB &amp; OpenStreetMap contributors</span>
+    <span>GMT 458 – Web GIS | GeoGame Projesi</span>
+    <span>Harita Altlığı: CARTO, Esri &amp; OpenStreetMap katkıcıları</span>
   </footer>
 
-  <!-- Post-game Chart.js Spatial Analytics Modal -->
-  <div id="analytics-modal" class="modal-backdrop hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
-    <div class="modal-card">
+  <!-- Başlangıç / Nasıl Oynanır Modalı -->
+  <div id="welcome-modal" class="modal-backdrop" aria-hidden="false" role="dialog" aria-labelledby="welcome-title">
+    <div class="modal-card welcome-card">
       <div class="modal-header">
         <div>
-          <h2 id="modal-title">Mission Spatial Debrief</h2>
-          <p id="modal-subtitle" class="modal-subtitle">Round-by-round spatial accuracy &amp; scoring analysis</p>
+          <span class="badge">GMT 458 · Web GIS GeoGame</span>
+          <h2 id="welcome-title" class="welcome-heading">Deprem &amp; Coğrafya Radarı'na Hoş Geldin!</h2>
+          <p class="modal-subtitle">
+            Dünyanın önemli fay hatlarını, volkanlarını ve simgesel coğrafi noktalarını 60 saniye içinde haritada bul.
+          </p>
         </div>
-        <button id="btn-modal-close" type="button" class="modal-close" aria-label="Close analytics modal">&times;</button>
+        <button id="btn-welcome-close" type="button" class="modal-close" aria-label="Pencereyi kapat">&times;</button>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-label">Final Score</span>
-          <span id="stat-final-score" class="stat-value">0</span>
+      <div class="how-to-grid">
+        <div class="how-step">
+          <span class="step-num">1</span>
+          <h3>İpucunu Oku</h3>
+          <p>Sol paneldeki tektonik veya coğrafi ipucunu ve izin verilen tolerans yarıçapını incele.</p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Hit Accuracy</span>
-          <span id="stat-accuracy" class="stat-value">0/0 (0%)</span>
+        <div class="how-step">
+          <span class="step-num">2</span>
+          <h3>Haritaya Tıkla</h3>
+          <p>Sağ alttaki canlı enlem/boylam değerlerini takip ederek tahmin ettiğin konuma tıkla.</p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Avg. Error</span>
-          <span id="stat-avg-error" class="stat-value">—</span>
+        <div class="how-step">
+          <span class="step-num">3</span>
+          <h3>Süre &amp; Bonus Kazan</h3>
+          <p>60 saniyelik sürede hızlı ve hedefe çok yakın tahminlerle hız puanı ve <strong>+3 sn</strong> süre bonusu kazan.</p>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Avg. Response</span>
-          <span id="stat-avg-time" class="stat-value">—</span>
+        <div class="how-step">
+          <span class="step-num">4</span>
+          <h3>10 Tur · 3 Seviye · 3 Can</h3>
+          <p>Seviye arttıkça tolerans daralır (900 → 550 → 300 km). Oyun sonunda Chart.js analizini incele!</p>
         </div>
-      </div>
-
-      <div class="chart-container">
-        <canvas id="performance-chart" aria-label="Spatial error and score per round chart"></canvas>
-        <p id="chart-empty-notice" class="chart-empty hidden">
-          No guesses were submitted before the mission ended.
-        </p>
       </div>
 
       <div class="modal-actions">
-        <button id="btn-modal-inspect" type="button" class="btn btn-secondary">
-          Inspect Map
+        <button id="btn-welcome-explore" type="button" class="btn btn-secondary">
+          Önce Haritayı İncele
         </button>
-        <button id="btn-modal-replay" type="button" class="btn btn-primary">
-          Play Again
+        <button id="btn-welcome-start" type="button" class="btn btn-primary" disabled>
+          Hemen Oyuna Başla
         </button>
       </div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Oyun Sonu Chart.js Mekansal Analiz Modalı -->
+  <div id="analytics-modal" class="modal-backdrop hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-title">Görev Sonu Mekansal Analiz</h2>
+          <p id="modal-subtitle" class="modal-subtitle">Tur bazlı hata mesafesi ve puan performansı</p>
+        </div>
+        <button id="btn-modal-close" type="button" class="modal-close" aria-label="Analiz penceresini kapat">&times;</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Toplam Puan</span>
+          <span id="stat-final-score" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">İsabet Oranı</span>
+          <span id="stat-accuracy" class="stat-value">0/0 (%0)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Ort. Hata</span>
+          <span id="stat-avg-error" class="stat-value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Ort. Süre</span>
+          <span id="stat-avg-time" class="stat-value">—</span>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="performance-chart" aria-label="Tur bazlı hata mesafesi ve puan grafiği"></canvas>
+        <p id="chart-empty-notice" class="chart-empty hidden">
+          Süre bitmeden önce henüz bir tahmin gönderilmedi.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-modal-inspect" type="button" class="btn btn-secondary">
+          Haritayı İncele
+        </button>
+        <button id="btn-modal-replay" type="button" class="btn btn-primary">
+          Tekrar Oyna
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/timer.js"></script>

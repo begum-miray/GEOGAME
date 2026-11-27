@@ -1,22 +1,32 @@
-// Leaflet map setup, basemap management, and animated radar overlays
+// Leaflet map setup, reliable light basemaps with automatic fallback, and animated radar overlays
 
 const DEFAULT_VIEW = {
-  center: [20, 15],
+  center: [25, 18],
   zoom: 2,
 };
 
 const BASEMAPS = {
-  dark: {
-    name: "Dark Radar",
-    url: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png",
-    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
-  },
   voyager: {
-    name: "Voyager Light",
-    url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
-    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+    name: "Açık Harita (Etiketsiz)",
+    url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png",
+    attribution: "&copy; OpenStreetMap katkıcıları &copy; CARTO",
+    subdomains: "abcd",
+  },
+  physical: {
+    name: "Fiziki Rölyef (Etiketsiz)",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+    attribution: "Tiles &copy; Esri — US National Park Service",
+    subdomains: "",
+  },
+  osm: {
+    name: "OpenStreetMap Standart",
+    url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution: "&copy; OpenStreetMap katkıcıları",
+    subdomains: "",
   },
 };
+
+const BASEMAP_ORDER = ["voyager", "physical", "osm"];
 
 function createRadarIcon(variant) {
   return L.divIcon({
@@ -42,31 +52,60 @@ function createMapController(containerId) {
     worldCopyJump: true,
   });
 
-  let activeBasemapKey = "dark";
-  let tileLayer = L.tileLayer(BASEMAPS[activeBasemapKey].url, {
-    attribution: BASEMAPS[activeBasemapKey].attribution,
-    subdomains: "abcd",
-    maxZoom: 19,
-  }).addTo(map);
+  let activeIndex = 0;
+  let tileLayer = null;
+  let fallbackTriggered = false;
+
+  function mountBasemap(key) {
+    if (tileLayer) {
+      map.removeLayer(tileLayer);
+    }
+
+    const cfg = BASEMAPS[key];
+    const options = {
+      attribution: cfg.attribution,
+      maxZoom: 18,
+    };
+    if (cfg.subdomains) {
+      options.subdomains = cfg.subdomains;
+    }
+
+    tileLayer = L.tileLayer(cfg.url, options);
+
+    // Automatic fallback if primary tile server fails to load
+    tileLayer.on("tileerror", () => {
+      if (!fallbackTriggered && key === "voyager") {
+        fallbackTriggered = true;
+        activeIndex = BASEMAP_ORDER.indexOf("physical");
+        mountBasemap("physical");
+      }
+    });
+
+    tileLayer.addTo(map);
+    return cfg.name;
+  }
+
+  mountBasemap(BASEMAP_ORDER[activeIndex]);
 
   const roundLayer = L.layerGroup().addTo(map);
 
   L.control.scale({ metric: true, imperial: false, position: "bottomleft" }).addTo(map);
+
+  // Ensure Leaflet computes exact viewport dimensions after layout paint
+  requestAnimationFrame(() => map.invalidateSize());
+  window.addEventListener("resize", () => map.invalidateSize());
+
+  function invalidate() {
+    setTimeout(() => map.invalidateSize(), 60);
+  }
 
   function resetView() {
     map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 0.75 });
   }
 
   function toggleBasemap() {
-    map.removeLayer(tileLayer);
-    activeBasemapKey = activeBasemapKey === "dark" ? "voyager" : "dark";
-    const nextConfig = BASEMAPS[activeBasemapKey];
-    tileLayer = L.tileLayer(nextConfig.url, {
-      attribution: nextConfig.attribution,
-      subdomains: "abcd",
-      maxZoom: 19,
-    }).addTo(map);
-    return nextConfig.name;
+    activeIndex = (activeIndex + 1) % BASEMAP_ORDER.length;
+    return mountBasemap(BASEMAP_ORDER[activeIndex]);
   }
 
   function clearRoundOverlays() {
@@ -82,28 +121,28 @@ function createMapController(containerId) {
     clearRoundOverlays();
 
     const targetLatLng = L.latLng(target.lat, target.lon);
-    const lineColor = isHit ? "#22c55e" : "#f97316";
+    const lineColor = isHit ? "#16a34a" : "#ea580c";
 
     // Target tolerance zone
     L.circle(targetLatLng, {
       radius: target.maxToleranceKm * 1000,
-      color: isHit ? "#22c55e" : "#38bdf8",
-      weight: 1.5,
+      color: isHit ? "#16a34a" : "#0284c7",
+      weight: 2,
       dashArray: "6 6",
       fillColor: isHit ? "#22c55e" : "#38bdf8",
-      fillOpacity: 0.12,
+      fillOpacity: 0.16,
     }).addTo(roundLayer);
 
     // Animated dashed line connecting guess and target
     const connector = L.polyline([guessLatLng, targetLatLng], {
       color: lineColor,
-      weight: 2.5,
+      weight: 3,
       dashArray: "8 8",
       className: "animated-guess-line",
     }).addTo(roundLayer);
 
     connector
-      .bindTooltip(`${Math.round(distanceKm).toLocaleString()} km`, {
+      .bindTooltip(`${Math.round(distanceKm).toLocaleString("tr-TR")} km`, {
         permanent: true,
         direction: "center",
         className: "distance-tooltip",
@@ -121,8 +160,8 @@ function createMapController(containerId) {
     })
       .bindPopup(
         `<strong>${target.name}</strong><br/>` +
-          `Lat: ${target.lat.toFixed(2)}°, Lon: ${target.lon.toFixed(2)}°<br/>` +
-          `Distance: ${Math.round(distanceKm).toLocaleString()} km`
+          `Enlem: ${target.lat.toFixed(2)}°, Boylam: ${target.lon.toFixed(2)}°<br/>` +
+          `Sapma: ${Math.round(distanceKm).toLocaleString("tr-TR")} km`
       )
       .addTo(roundLayer);
 
@@ -137,6 +176,7 @@ function createMapController(containerId) {
 
   return {
     map,
+    invalidate,
     resetView,
     toggleBasemap,
     clearRoundOverlays,
