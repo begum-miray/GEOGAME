@@ -114,7 +114,12 @@ function createAnalyticsController() {
               afterBody: (items) => {
                 const idx = items[0].dataIndex;
                 const rec = results[idx];
-                const categoryLabel = rec.category === "seismic" ? "Sismik Bölge" : "Coğrafi Nokta";
+                const categoryMap = {
+                  deprem: "Deprem / Volkan",
+                  doga: "Doğa Harikası",
+                  kultur: "Tarihi / Kültürel",
+                };
+                const categoryLabel = categoryMap[rec.category] || rec.category;
                 const status = rec.isHit ? "İSABET" : "KAÇTI";
                 return [
                   `Kategori: ${categoryLabel} (Seviye ${rec.level})`,

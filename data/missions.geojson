@@ -1,88 +1,88 @@
 {
   "type": "FeatureCollection",
-  "name": "QuakeAndLandmarkMissions",
+  "name": "TurkiyeHaritaAvi",
   "metadata": {
-    "title": "Deprem & Coğrafya Radarı Görev Veri Seti",
+    "title": "Türkiye Harita Avı Görev Veri Seti",
     "sources": [
-      "USGS Earthquake Hazards Program (açık sismik katalog)",
-      "UNESCO World Heritage Centre (açık miras koordinatları)",
-      "Natural Earth (açık coğrafi referans verisi)"
+      "AFAD / USGS açık tektonik ve deprem verileri",
+      "UNESCO Dünya Mirası Listesi Türkiye koordinatları",
+      "Natural Earth açık coğrafi veri seti"
     ]
   },
   "features": [
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [-122.4194, 37.7749] },
+      "geometry": { "type": "Point", "coordinates": [32.8369, 39.9251] },
       "properties": {
         "id": "L1-01",
-        "name": "San Andreas Fayı (San Francisco, ABD)",
-        "category": "seismic",
+        "name": "Anıtkabir (Ankara)",
+        "category": "kultur",
         "level": 1,
-        "region": "Kuzey Amerika · ABD Batı Kıyısı",
-        "source": "USGS Earthquake Hazards Program",
-        "clue": "ABD'nin batı kıyısındaki Kaliforniya eyaletinde, Pasifik Okyanusu kıyısındaki San Francisco şehrinde bulunan ünlü deprem fay hattı.",
-        "fact": "San Andreas Fayı, Pasifik Levhası ile Kuzey Amerika Levhası arasındaki tektonik sınırı oluşturur.",
-        "maxToleranceKm": 1100
+        "region": "İç Anadolu · Başkent",
+        "source": "Natural Earth",
+        "clue": "Türkiye'nin başkenti Ankara'da, Anıttepe üzerinde yer alan Gazi Mustafa Kemal Atatürk'ün anıt mezarı.",
+        "fact": "Anıtkabir 1953 yılında tamamlanmış olup Ankara'nın tam merkezinde yer alır.",
+        "maxToleranceKm": 220
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [31.1342, 29.9792] },
+      "geometry": { "type": "Point", "coordinates": [29.0122, 41.0082] },
       "properties": {
         "id": "L1-02",
-        "name": "Giza Piramitleri (Mısır)",
-        "category": "landmark",
+        "name": "İstanbul Boğazı (İstanbul)",
+        "category": "kultur",
         "level": 1,
-        "region": "Kuzey Afrika · Mısır",
-        "source": "UNESCO World Heritage Centre",
-        "clue": "Kuzey Afrika'da, Mısır'ın başkenti Kahire yakınlarında ve Akdeniz'e dökülen Nil Nehri'nin hemen kıyısında bulunan dünyaca ünlü piramitler.",
-        "fact": "Büyük Giza Piramidi, Antik Dünyanın Yedi Harikası içinde günümüze ulaşan tek yapıdır.",
-        "maxToleranceKm": 1100
+        "region": "Marmara Bölgesi",
+        "source": "Natural Earth",
+        "clue": "Asya ile Avrupa kıtalarını birbirine bağlayan, Karadeniz ile Marmara Denizi arasındaki ünlü boğaz ve metropol.",
+        "fact": "İstanbul Boğazı yaklaşık 30 km uzunluğundadır ve dünyanın en işlek su yollarından biridir.",
+        "maxToleranceKm": 220
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [138.7274, 35.3606] },
+      "geometry": { "type": "Point", "coordinates": [34.8289, 38.6431] },
       "properties": {
         "id": "L1-03",
-        "name": "Fuji Dağı (Japonya)",
-        "category": "seismic",
+        "name": "Kapadokya / Peribacaları (Nevşehir)",
+        "category": "doga",
         "level": 1,
-        "region": "Doğu Asya · Japonya",
-        "source": "USGS & UNESCO World Heritage Centre",
-        "clue": "Doğu Asya'daki ada ülkesi Japonya'nın orta kesiminde, başkent Tokyo'nun hemen güneybatısında yükselen ünlü volkanik dağ.",
-        "fact": "Fuji Dağı üç farklı tektonik levhanın birleştiği Pasifik Ateş Çemberi üzerinde bulunur.",
-        "maxToleranceKm": 1100
+        "region": "İç Anadolu Bölgesi",
+        "source": "UNESCO Dünya Mirası",
+        "clue": "İç Anadolu'nun kalbinde, sıcak hava balonları ve volkanik tüf kayalardan oluşan peribacalarıyla ünlü bölge.",
+        "fact": "Kapadokya'nın tüfleri Erciyes ve Hasan Dağı'nın milyonlarca yıl önceki püskürmeleriyle oluşmuştur.",
+        "maxToleranceKm": 220
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [147.6992, -18.2871] },
+      "geometry": { "type": "Point", "coordinates": [27.3414, 37.9411] },
       "properties": {
         "id": "L1-04",
-        "name": "Büyük Set Resifi (Avustralya)",
-        "category": "landmark",
+        "name": "Efes Antik Kenti (İzmir)",
+        "category": "kultur",
         "level": 1,
-        "region": "Okyanusya · Avustralya",
-        "source": "UNESCO World Heritage Centre",
-        "clue": "Avustralya kıtasının kuzeydoğu kıyısı boyunca uzanan, uzaydan bile görülebilen dünyanın en büyük mercan resifi.",
-        "fact": "2.900'den fazla ayrı resiften oluşan Büyük Set Resifi, dünyanın en büyük canlı yapısıdır.",
-        "maxToleranceKm": 1100
+        "region": "Ege Bölgesi",
+        "source": "UNESCO Dünya Mirası",
+        "clue": "Ege kıyısında, İzmir'in güneyinde (Selçuk) yer alan ve Celsus Kütüphanesi ile tanınan antik kent.",
+        "fact": "Efes, antik çağda önemli bir liman kentiydi; zamanla alüvyonlar nedeniyle denizden içeride kalmıştır.",
+        "maxToleranceKm": 220
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [-72.5450, -13.1631] },
+      "geometry": { "type": "Point", "coordinates": [30.7133, 36.8969] },
       "properties": {
         "id": "L1-05",
-        "name": "Machu Picchu (Peru)",
-        "category": "landmark",
+        "name": "Antalya Körfezi & Düden (Antalya)",
+        "category": "doga",
         "level": 1,
-        "region": "Güney Amerika · Peru",
-        "source": "UNESCO World Heritage Centre",
-        "clue": "Güney Amerika'nın batısındaki Peru ülkesinde, And Dağları'nın zirvelerinde kurulu dünyaca ünlü antik İnka kenti.",
-        "fact": "İnka mühendisleri aktif And deprem kuşağına dayanıklı harçsız kilitli taş duvarlar inşa etmiştir.",
-        "maxToleranceKm": 1100
+        "region": "Akdeniz Bölgesi",
+        "source": "Natural Earth",
+        "clue": "Türkiye'nin güney kıyısında, Toros Dağları'nın eteğinde yer alan ve turizm başkenti olarak bilinen Akdeniz şehri.",
+        "fact": "Antalya çevresindeki karstik yapı sayesinde çok sayıda şelale ve mağara oluşmuştur.",
+        "maxToleranceKm": 220
       }
     },
     {
@@ -90,149 +90,149 @@
       "geometry": { "type": "Point", "coordinates": [29.9169, 40.7654] },
       "properties": {
         "id": "L2-01",
-        "name": "Kuzey Anadolu Fayı (İzmit, Türkiye)",
-        "category": "seismic",
+        "name": "Kuzey Anadolu Fayı – İzmit Körfezi (Kocaeli)",
+        "category": "deprem",
         "level": 2,
-        "region": "Türkiye · Marmara Bölgesi",
-        "source": "USGS Earthquake Hazards Program",
-        "clue": "Türkiye'nin kuzeybatısında, İstanbul'un hemen doğusunda ve Marmara Denizi'nin doğu ucunda (İzmit Körfezi) yer alan aktif fay hattı.",
-        "fact": "Kuzey Anadolu Fayı, Anadolu Levhası'nın Avrasya'ya göre batıya doğru hareketini karşılar.",
-        "maxToleranceKm": 750
+        "region": "Marmara Doğusu",
+        "source": "AFAD / USGS",
+        "clue": "İstanbul'un hemen doğusunda, Marmara Denizi'nin doğu ucunda uzanan ve Kuzey Anadolu Fay Hattı üzerinde yer alan körfez.",
+        "fact": "Kuzey Anadolu Fayı Türkiye'nin kuzeyi boyunca yaklaşık 1.500 km uzanan aktif bir doğrultu atımlı faydır.",
+        "maxToleranceKm": 140
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [-21.9426, 64.1466] },
+      "geometry": { "type": "Point", "coordinates": [29.1211, 37.9204] },
       "properties": {
         "id": "L2-02",
-        "name": "Orta Atlantik Sırtı (İzlanda)",
-        "category": "seismic",
+        "name": "Pamukkale Travertenleri (Denizli)",
+        "category": "doga",
         "level": 2,
-        "region": "Kuzey Avrupa · İzlanda Adası",
-        "source": "USGS & Natural Earth",
-        "clue": "Kuzey Atlas Okyanusu'nda, Grönland ile Avrupa arasında tek başına duran volkanik ada ülkesi İzlanda'nın başkenti Reykjavík.",
-        "fact": "İzlanda'da Kuzey Amerika ve Avrasya levhaları her yıl yaklaşık 2 santimetre birbirinden uzaklaşır.",
-        "maxToleranceKm": 750
+        "region": "İç Ege · Denizli",
+        "source": "UNESCO Dünya Mirası",
+        "clue": "Ege'nin iç kesiminde, bembeyaz kalsiyum terasları ve sıcak termal sularıyla ünlü doğa harikası.",
+        "fact": "Pamukkale'nin hemen yanında antik Hierapolis kenti yer alır ve ikisi birlikte UNESCO listesindedir.",
+        "maxToleranceKm": 140
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [86.9250, 27.9881] },
+      "geometry": { "type": "Point", "coordinates": [39.6584, 40.6900] },
       "properties": {
         "id": "L2-03",
-        "name": "Everest Dağı (Nepal / Himalayalar)",
-        "category": "landmark",
+        "name": "Sümela Manastırı (Trabzon)",
+        "category": "kultur",
         "level": 2,
-        "region": "Güney Asya · Hindistan'ın Kuzeyi",
+        "region": "Doğu Karadeniz",
         "source": "Natural Earth",
-        "clue": "Hindistan'ın hemen kuzeyinde, Nepal ile Çin (Tibet) sınırındaki Himalaya Dağları'nda bulunan dünyanın en yüksek dağı.",
-        "fact": "Devam eden tektonik çarpışma Himalayaları her yıl birkaç milimetre daha yükseltmektedir.",
-        "maxToleranceKm": 750
+        "clue": "Doğu Karadeniz'de, Trabzon'un Maçka ilçesinde sarp bir kayalığın yamacına kurulmuş tarihi manastır.",
+        "fact": "Karadağ'ın eteklerinde vadiden yaklaşık 300 metre yüksekte inşa edilmiştir.",
+        "maxToleranceKm": 140
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [142.3720, 38.2970] },
+      "geometry": { "type": "Point", "coordinates": [35.4469, 38.5319] },
       "properties": {
         "id": "L2-04",
-        "name": "Tohoku Deprem Bölgesi (Japonya Doğusu)",
-        "category": "seismic",
+        "name": "Erciyes Yanardağı (Kayseri)",
+        "category": "deprem",
         "level": 2,
-        "region": "Doğu Asya · Japonya Kuzeydoğusu",
-        "source": "USGS Earthquake Hazards Program",
-        "clue": "Japonya'nın kuzeydoğu kıyısı (Sendai açıkları) boyunca uzanan ve 2011 yılındaki büyük Japonya depremine yol açan okyanus çukuru.",
-        "fact": "2011 kırılması Japonya'nın ana adasını doğuya doğru 2 metreden fazla kaydırmıştır.",
-        "maxToleranceKm": 750
+        "region": "İç Anadolu Doğusu",
+        "source": "Natural Earth",
+        "clue": "Kayseri'nin hemen güneyinde yükselen, 3.917 metre yüksekliğiyle İç Anadolu'nun en yüksek sönmüş yanardağı.",
+        "fact": "Erciyes, kış turizmi ve kayak merkeziyle ünlü büyük bir stratovolkandır.",
+        "maxToleranceKm": 140
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [-5.3536, 36.1408] },
+      "geometry": { "type": "Point", "coordinates": [43.0000, 38.6300] },
       "properties": {
         "id": "L2-05",
-        "name": "Cebelitarık Boğazı (İspanya – Fas)",
-        "category": "landmark",
+        "name": "Van Gölü (Van / Bitlis)",
+        "category": "doga",
         "level": 2,
-        "region": "Batı Akdeniz · İspanya'nın Güneyi",
+        "region": "Doğu Anadolu",
         "source": "Natural Earth",
-        "clue": "İspanya'nın en güney ucu ile Fas'ın (Kuzey Afrika) en kuzey ucu arasında yer alan, Akdeniz'i Atlas Okyanusu'na bağlayan dar boğaz.",
-        "fact": "En dar noktasında Avrupa ile Afrika kıtaları arasındaki mesafe yalnızca 14 kilometredir.",
-        "maxToleranceKm": 750
+        "clue": "Doğu Anadolu'da bulunan, Türkiye'nin en büyük gölü ve dünyanın en büyük sodalı volkanik set gölü.",
+        "fact": "Nemrut Volkanı'nın lavlarının vadiyi tıkamasıyla oluşan Van Gölü'nde Akdamar Adası yer alır.",
+        "maxToleranceKm": 140
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [-73.2459, -39.8142] },
+      "geometry": { "type": "Point", "coordinates": [38.9224, 37.2232] },
       "properties": {
         "id": "L3-01",
-        "name": "Valdivia Deprem Zonu (Güney Şili)",
-        "category": "seismic",
+        "name": "Göbeklitepe (Şanlıurfa)",
+        "category": "kultur",
         "level": 3,
-        "region": "Güney Amerika · Şili Güney Kıyısı",
-        "source": "USGS Earthquake Hazards Program",
-        "clue": "Güney Amerika'nın güneybatısındaki ince uzun Şili ülkesinin güney kıyısında, 1960'ta tarihin en büyük depreminin (9.5) yaşandığı bölge.",
-        "fact": "1960 Valdivia depremi tüm Pasifik Okyanusu'nu aşarak Japonya'ya kadar ulaşan dev bir tsunami oluşturmuştur.",
-        "maxToleranceKm": 450
+        "region": "Güneydoğu Anadolu",
+        "source": "UNESCO Dünya Mirası",
+        "clue": "Güneydoğu Anadolu'da, Şanlıurfa yakınlarında bulunan ve yaklaşık 12.000 yıllık geçmişiyle bilinen en eski tapınak alanı.",
+        "fact": "Göbeklitepe'deki T biçimli dikilitaşlar insanlık tarihinin en eski anıtsal yapıları arasındadır.",
+        "maxToleranceKm": 90
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [34.8289, 38.6431] },
+      "geometry": { "type": "Point", "coordinates": [44.2983, 39.7020] },
       "properties": {
         "id": "L3-02",
-        "name": "Kapadokya (Nevşehir, Türkiye)",
-        "category": "landmark",
+        "name": "Ağrı Dağı Volkanı (Ağrı / Iğdır)",
+        "category": "deprem",
         "level": 3,
-        "region": "Türkiye · İç Anadolu",
-        "source": "UNESCO World Heritage Centre",
-        "clue": "Türkiye'nin tam ortasında, Ankara'nın güneydoğusundaki İç Anadolu Bölgesi'nde (Nevşehir) peribacalarıyla ünlü volkanik bölge.",
-        "fact": "Yumuşak volkanik tüfler, tarih boyunca çok katlı yeraltı şehirleri ve kaya kiliselerinin oyulmasına olanak tanımıştır.",
-        "maxToleranceKm": 450
+        "region": "En Doğu · Doğu Anadolu",
+        "source": "Natural Earth",
+        "clue": "Türkiye'nin en doğu ucunda, 5.137 metre yüksekliğiyle ülkemizin en yüksek dağı olan volkanik zirve.",
+        "fact": "Ağrı Dağı'nın zirvesinde dört mevsim erimeyen takke buzulu bulunur.",
+        "maxToleranceKm": 90
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [95.3238, 5.5483] },
+      "geometry": { "type": "Point", "coordinates": [38.7408, 37.9806] },
       "properties": {
         "id": "L3-03",
-        "name": "Sumatra Fay Kuşağı (Endonezya Kuzeybatısı)",
-        "category": "seismic",
+        "name": "Nemrut Dağı Heykelleri (Adıyaman)",
+        "category": "kultur",
         "level": 3,
-        "region": "Güneydoğu Asya · Endonezya (Sumatra)",
-        "source": "USGS Earthquake Hazards Program",
-        "clue": "Güneydoğu Asya'daki Endonezya'nın en kuzeybatı adası olan Sumatra'nın uç noktası (2004 Hint Okyanusu tsunamisinin merkezi).",
-        "fact": "2004 depremindeki fay kırılması deniz tabanında yaklaşık 1.300 km boyunca ilerlemiştir.",
-        "maxToleranceKm": 450
+        "region": "Güneydoğu · Adıyaman",
+        "source": "UNESCO Dünya Mirası",
+        "clue": "Adıyaman'da 2.150 metre yükseklikte, Kommagene Krallığı'ndan kalma dev taş heykelleriyle ünlü dağ.",
+        "fact": "Nemrut Dağı özellikle gün doğumu ve gün batımı manzarasıyla dünyaca ünlüdür.",
+        "maxToleranceKm": 90
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [35.4444, 30.3285] },
+      "geometry": { "type": "Point", "coordinates": [36.9371, 37.5858] },
       "properties": {
         "id": "L3-04",
-        "name": "Petra Antik Kenti (Ürdün)",
-        "category": "landmark",
+        "name": "Doğu Anadolu Fayı (Kahramanmaraş)",
+        "category": "deprem",
         "level": 3,
-        "region": "Orta Doğu · Ürdün",
-        "source": "UNESCO World Heritage Centre",
-        "clue": "Orta Doğu'da, Kızıldeniz'in kuzey ucuna çok yakın, Ürdün'ün güneyinde kayalara oyulmuş dünyaca ünlü antik kent.",
-        "fact": "Petra'nın gelişmiş su kanalları ve baraj ağı çöl ikliminde büyük bir kentin yaşamasını sağlamıştır.",
-        "maxToleranceKm": 450
+        "region": "Doğu Akdeniz · Kahramanmaraş",
+        "source": "AFAD / USGS",
+        "clue": "Akdeniz ile Güneydoğu Anadolu'nun kesişiminde yer alan ve Doğu Anadolu Fay Zonu üzerindeki önemli deprem kuşağı.",
+        "fact": "Doğu Anadolu Fayı, Arap Levhası ile Anadolu Levhası arasındaki sol yanal doğrultu atımlı sınırdır.",
+        "maxToleranceKm": 90
       }
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [37.3556, -3.0674] },
+      "geometry": { "type": "Point", "coordinates": [29.6792, 37.5514] },
       "properties": {
         "id": "L3-05",
-        "name": "Kilimanjaro Dağı (Tanzanya – Kenya)",
-        "category": "seismic",
+        "name": "Salda Gölü (Burdur)",
+        "category": "doga",
         "level": 3,
-        "region": "Doğu Afrika · Tanzanya – Kenya Sınırı",
-        "source": "USGS & UNESCO World Heritage Centre",
-        "clue": "Doğu Afrika'da, Ekvator çizgisinin hemen güneyinde Tanzanya ile Kenya sınırında yükselen Afrika'nın en yüksek volkanik dağı.",
-        "fact": "Doğu Afrika Rifti, Afrika Levhası'nı yavaşça ikiye ayıran aktif bir kıtasal yarılma bölgesidir.",
-        "maxToleranceKm": 450
+        "region": "Göller Yöresi · Burdur",
+        "source": "Natural Earth",
+        "clue": "Akdeniz'in iç kesimindeki Göller Yöresi'nde, bembeyaz kumsalı ve turkuaz suyuyla 'Türkiye'nin Maldivleri' denen krater gölü.",
+        "fact": "Salda Gölü'ndeki hidromanyezit minerali Mars'taki Jezero Krateri'ne benzerliğiyle bilim insanlarının ilgisini çeker.",
+        "maxToleranceKm": 90
       }
     }
   ]

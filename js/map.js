@@ -1,25 +1,30 @@
-// Leaflet map setup, reliable light basemaps with automatic fallback, and animated radar overlays
+// Leaflet map setup centered on Turkey with reliable light basemaps and fun animations
 
-const DEFAULT_VIEW = {
-  center: [25, 18],
-  zoom: 2,
+const TURKEY_VIEW = {
+  center: [39.05, 35.25],
+  zoom: 6,
 };
+
+const TURKEY_BOUNDS = [
+  [34.2, 24.5],
+  [43.5, 46.2],
+];
 
 const BASEMAPS = {
   lightGray: {
     name: "Beyaz Harita (Etiketsiz)",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-    attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
+    attribution: "Tiles &copy; Esri",
     subdomains: "",
   },
   physical: {
     name: "Fiziki Rölyef (Etiketsiz)",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
-    attribution: "Tiles &copy; Esri &mdash; US National Park Service",
+    attribution: "Tiles &copy; Esri",
     subdomains: "",
   },
   osm: {
-    name: "OpenStreetMap Standart",
+    name: "OpenStreetMap",
     url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution: "&copy; OpenStreetMap katkıcıları",
     subdomains: "",
@@ -45,11 +50,12 @@ function createRadarIcon(variant) {
 function createMapController(containerId) {
   const containerEl = document.getElementById(containerId);
   const map = L.map(containerId, {
-    center: DEFAULT_VIEW.center,
-    zoom: DEFAULT_VIEW.zoom,
-    minZoom: 2,
+    center: TURKEY_VIEW.center,
+    zoom: TURKEY_VIEW.zoom,
+    minZoom: 5,
     maxZoom: 12,
-    worldCopyJump: true,
+    maxBounds: TURKEY_BOUNDS,
+    maxBoundsViscosity: 0.75,
   });
 
   let activeIndex = 0;
@@ -72,7 +78,6 @@ function createMapController(containerId) {
 
     tileLayer = L.tileLayer(cfg.url, options);
 
-    // Automatic fallback if primary tile server fails to load
     tileLayer.on("tileerror", () => {
       if (!fallbackTriggered && key === "lightGray") {
         fallbackTriggered = true;
@@ -91,7 +96,6 @@ function createMapController(containerId) {
 
   L.control.scale({ metric: true, imperial: false, position: "bottomleft" }).addTo(map);
 
-  // Ensure Leaflet computes exact viewport dimensions after layout paint
   requestAnimationFrame(() => map.invalidateSize());
   window.addEventListener("resize", () => map.invalidateSize());
 
@@ -100,7 +104,7 @@ function createMapController(containerId) {
   }
 
   function resetView() {
-    map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 0.75 });
+    map.flyTo(TURKEY_VIEW.center, TURKEY_VIEW.zoom, { duration: 0.7 });
   }
 
   function toggleBasemap() {
@@ -121,19 +125,17 @@ function createMapController(containerId) {
     clearRoundOverlays();
 
     const targetLatLng = L.latLng(target.lat, target.lon);
-    const lineColor = isHit ? "#16a34a" : "#ea580c";
+    const lineColor = isHit ? "#16a34a" : "#f97316";
 
-    // Target tolerance zone
     L.circle(targetLatLng, {
       radius: target.maxToleranceKm * 1000,
-      color: isHit ? "#16a34a" : "#0284c7",
+      color: isHit ? "#16a34a" : "#2563eb",
       weight: 2,
       dashArray: "6 6",
-      fillColor: isHit ? "#22c55e" : "#38bdf8",
+      fillColor: isHit ? "#22c55e" : "#60a5fa",
       fillOpacity: 0.16,
     }).addTo(roundLayer);
 
-    // Animated dashed line connecting guess and target
     const connector = L.polyline([guessLatLng, targetLatLng], {
       color: lineColor,
       weight: 3,
@@ -149,7 +151,6 @@ function createMapController(containerId) {
       })
       .openTooltip();
 
-    // Animated pulse markers for guess and true location
     L.marker(guessLatLng, {
       icon: createRadarIcon("guess-pin"),
       interactive: false,
@@ -161,16 +162,15 @@ function createMapController(containerId) {
       .bindPopup(
         `<strong>${target.name}</strong><br/>` +
           `Enlem: ${target.lat.toFixed(2)}°, Boylam: ${target.lon.toFixed(2)}°<br/>` +
-          `Sapma: ${Math.round(distanceKm).toLocaleString("tr-TR")} km`
+          `Mesafe: ${Math.round(distanceKm).toLocaleString("tr-TR")} km`
       )
       .addTo(roundLayer);
 
-    // Smooth camera focus covering both guess and target
     const bounds = L.latLngBounds([guessLatLng, targetLatLng]);
     map.flyToBounds(bounds, {
-      padding: [70, 70],
-      maxZoom: 6,
-      duration: 0.9,
+      padding: [80, 80],
+      maxZoom: 8,
+      duration: 0.85,
     });
   }
 

@@ -1,4 +1,4 @@
-# Deprem & Coğrafya Radarı (Quake & Landmark Radar) — GMT 458 GeoGame
+# Türkiye Harita Avı (Turkey Map Hunt) — GMT 458 GeoGame
 
 > **Play the Live Game (GitHub Pages):** [https://begum-miray.github.io/GEOGAME/](https://begum-miray.github.io/GEOGAME/)
 >
@@ -8,143 +8,134 @@
 
 ## 1. About the Game & Functional Requirements
 
-For GMT 458 – Web GIS Assignment 2, I designed and developed **Deprem & Coğrafya Radarı** (*Quake & Landmark Radar*), an interactive browser-based GeoGame built with HTML, CSS, and vanilla JavaScript. Because the target audience is Turkish-speaking players, the user interface and spatial clues are in Turkish, while the source code, architecture, and documentation are structured in English.
+For GMT 458 – Web GIS Assignment 2, I designed and built **Türkiye Harita Avı** (*Turkey Map Hunt*), a fun, interactive, Turkey-based GeoGame built with HTML, CSS, and vanilla JavaScript. The interface and clues are in Turkish so anyone can jump in and play right away, while the source code and documentation are in English.
 
-In the game, the player reads tectonic or geographic clues (such as fault lines, subduction zones, volcanic arcs, and iconic world landmarks) and tries to pinpoint the exact location on a label-free world map within **60 seconds**. After each click on the map, the game calculates the great-circle distance in kilometers using the **Haversine formula**, animates the guess and true target with radar pulse rings, and shows an educational geographic fact.
+The idea is simple and fun: when the page opens, an animated welcome guide introduces the rules. Once you start, you have **60 seconds** to find 10 famous Turkish landmarks, natural wonders, and active fault/volcanic zones on a clean, label-free **Turkey map**. After every click, the game calculates how many kilometers away you clicked using the **Haversine formula**, animates radar pulse rings and a dashed distance line, celebrates hits with confetti and a floating score toast, and teaches a short fact about that location.
 
 ### Functional Requirements
-1. **Interactive Label-Free Map:** Display a responsive Leaflet map where players can pan, zoom, reset the view, and switch between label-free basemaps (Esri Light Gray Base, Esri World Physical Map, and OpenStreetMap) while seeing live cursor coordinates (`Lat / Lon`).
-2. **Welcome / How-to-Play Screen:** Greet the player on startup with a clear 4-step Turkish guide (*Nasıl Oynanır?*) that can also be reopened anytime from the top header.
-3. **Open GeoJSON Mission Data:** Load 15 geographic targets asynchronously from a local RFC 7946 GeoJSON file (`data/missions.geojson`) containing coordinates, clues, difficulty tiers, tolerance radii, and short facts.
-4. **Progressive Difficulty & Spatial Evaluation:** Run a 10-round session across 3 difficulty levels with shrinking tolerance radii, evaluating every click with Haversine distance.
-5. **Visual & Radar Feedback:** Show animated radar pulse pins, target tolerance circles, dashed distance polylines with km labels, score pop animations, and panel shake animations on misses.
-6. **Temporal Component & Persistence:** Enforce a 60-second countdown timer with a live progress bar, speed/precision bonuses, and browser `localStorage` high-score persistence.
-7. **Post-Game Spatial Analytics (Bonus):** Visualize round-by-round spatial error (km) and points earned in a Chart.js dual-axis modal when the game finishes.
+1. **Turkey-Focused Interactive Map:** Render a responsive Leaflet map centered and bounded on Turkey (`[39.05, 35.25]`, zoom `6`) using a clean white label-free basemap (Esri World Light Gray Base), with options to switch to Esri Physical Relief or OpenStreetMap and reset back to Turkey anytime.
+2. **Animated Welcome & How-to-Play Screen:** Greet the player on load with a bouncing map-pin animation, staggered rule cards (*Nasıl Oynanır?*), and a header Help button to reopen the guide anytime.
+3. **Open Turkey GeoJSON Dataset:** Load 15 curated Turkish locations asynchronously from `data/missions.geojson` (RFC 7946 `FeatureCollection`) covering all 7 regions of Turkey (cultural landmarks, natural wonders, and seismic/volcanic zones).
+4. **Progressive Difficulty & Haversine Scoring:** Play 10 rounds across 3 levels (Easy → Medium → Hard) with shrinking tolerance radii (`220 km → 140 km → 90 km`), scoring each guess based on Haversine distance, speed, and consecutive hit streaks.
+5. **Playful Game Animations & Tactile UI:** Include 3D pushable arcade-style buttons, radar pulse rings, animated dashed distance lines, floating score toasts, confetti bursts on accurate hits, and panel shake animations on misses.
+6. **Temporal Component & Persistence:** Run a 60-second countdown timer with a live progress bar, `+3s` precision time bonuses, an urgent final-10-second warning, and `localStorage` high-score saving.
+7. **Post-Game Spatial Analytics (Bonus):** Display an interactive **Chart.js** dual-axis debrief chart at the end of the game comparing each round's error distance (km) and points earned.
 
 ---
 
 ## 2. Frontend Layout Sketch & Live Screenshots
 
 ### Initial Frontend Layout Sketch
-Before finalizing the interface, I planned the page layout around a top HUD bar, a thin temporal progress strip, a left mission/clue sidebar, and a full-height Leaflet map canvas:
+Before coding the interface, I sketched the main layout with a top HUD bar, temporal progress strip, left clue sidebar, and interactive Leaflet map canvas:
 
 ![Frontend Layout Wireframe Sketch](assets/images/layout-sketch.svg)
 
-### Live Application Screenshots
+### Live Game Screenshots
 
-**Welcome & "Nasıl Oynanır?" (How to Play) Screen:**
+**Animated Welcome & "Nasıl Oynanır?" Screen:**
 
 ![Welcome and How to Play Screen](assets/images/screenshot-welcome.png)
 
-**Active Gameplay Screen (White Minimal Theme & Label-Free Esri Basemap):**
+**Active Gameplay on the Turkey Map (White Student-Friendly UI):**
 
-![Active Gameplay Screen](assets/images/screenshot-gameplay.png)
+![Active Turkey Map Gameplay](assets/images/screenshot-gameplay.png)
 
 ---
 
 ## 3. Game Progression, Rules & Temporal Component
 
 ### Difficulty Levels & Number of Tasks
-Each game consists of **10 rounds** drawn and shuffled per difficulty level from the 15-feature GeoJSON dataset:
+Each game selects and shuffles **10 rounds** from the 15-feature Turkey GeoJSON dataset, getting tighter as you advance:
 
-| Level | Rounds | Focus | Allowed Tolerance |
+| Level | Rounds | Example Locations in Turkey | Allowed Tolerance |
 | :--- | :---: | :--- | :---: |
-| **Seviye 1 · Küresel (Global)** | 4 | Well-known landmarks and major fault zones | **900 km** |
-| **Seviye 2 · Bölgesel (Regional)** | 3 | Tectonic boundaries, straits, and mountain belts | **550 km** |
-| **Seviye 3 · Hassas (Precision)** | 3 | Subduction trenches, rift valleys, and micro-regions | **300 km** |
+| **Seviye 1 · Kolay (Easy)** | 4 | Anıtkabir, İstanbul Boğazı, Kapadokya, Efes, Antalya | **220 km** |
+| **Seviye 2 · Orta (Medium)** | 3 | Kuzey Anadolu Fayı (İzmit), Pamukkale, Sümela, Erciyes, Van Gölü | **140 km** |
+| **Seviye 3 · Zor (Hard)** | 3 | Göbeklitepe, Ağrı Dağı, Nemrut Dağı, Doğu Anadolu Fayı, Salda Gölü | **90 km** |
 
-A 10-segment progress bar at the top of the left panel tracks the player's progress visually (blue for the active round, green for hits, orange for misses).
+A 10-segment progress bar at the top of the left panel shows your live progress across all 10 questions (blue = active, green = hit, orange = miss).
 
 ### Number of Lives
-Players start with **3 lives (`♥♥♥`)**. Clicking outside the current target's tolerance radius deducts 1 life and resets the hit streak. If all 3 lives are lost, the game ends early and opens the analytics summary.
+Players start with **3 lives (`♥♥♥`)**. Clicking outside the target's allowed tolerance radius removes 1 life and resets the hit streak. Losing all 3 lives ends the round and opens the Chart.js summary.
 
 ### Scoring & High-Score Mechanism
-When a guess falls within the allowed tolerance radius (`distanceKm <= maxToleranceKm`), the score is calculated from three parts:
-- **Proximity Base Score (up to 1,000 pts):** Higher points are awarded the closer the clicked point is to the true GeoJSON coordinate.
-- **Streak Bonus:** Consecutive hits earn `+100 × (streak - 1)` bonus points and display a live streak badge (`2x Seri`, `3x Seri`, etc.).
-- **Speed Bonus:** Answering within 5 seconds adds `+150 pts`, and within 9 seconds adds `+75 pts`.
-- **High Score (`Rekor`):** The highest score is saved automatically in `window.localStorage` (`geogame_quake_radar_highscore`) so it persists when the page is refreshed.
+When your click lands inside the target's tolerance circle (`distanceKm <= maxToleranceKm`), you earn:
+- **Proximity Score (up to 1,000 pts):** Closer clicks to the true coordinate earn more points.
+- **Streak Bonus:** Consecutive hits earn `+100 × (streak - 1)` extra points and show a `🔥 2x Seri` badge.
+- **Speed Bonus:** Answering in `≤ 5s` adds `+150 pts`, and `≤ 9s` adds `+75 pts`.
+- **High Score (`Rekor`):** Saved in `window.localStorage` (`geogame_quake_radar_highscore`) so your personal record stays saved across refreshes.
 
-### Temporal Component & How It Affects Gameplay
-- The entire 10-round session is played under a **60-second** countdown timer (`js/timer.js`), shown both in the header (`Süre`) and as a continuous shrinking bar directly under the header.
-- While the player reviews the Haversine distance line and reads the geographic fact between rounds, the timer **pauses** so reading does not penalize the player, and **resumes** when clicking *Sonraki Hedef →* (or pressing `Enter` / `Space`).
-- **Precision Time Bonus (`+3 sn`):** If the player's click lands within the innermost **35%** of the target's tolerance radius, `+3` seconds are added back to the clock (up to 60s).
-- During the last **10 seconds**, the timer turns red and pulses (`@keyframes timerUrgent`). Reaching `0 sn` ends the game via `endByTimeout()`.
+### Temporal Component & Gameplay Impact
+- Every session runs on a **60-second** timer (`js/timer.js`), displayed both in the top HUD (`Süre`) and as a shrinking bar across the screen.
+- After you click, the timer **pauses** while you look at the distance line and read the short geographic fact, then **resumes** as soon as you click *Sonraki Soru* (or press `Enter` / `Space`).
+- **Precision Time Bonus (`+3 sn`):** Clicking within the innermost **35%** of the target's tolerance circle awards `+3` extra seconds (up to 60s).
+- In the last **10 seconds**, the timer turns red and pulses. When time hits `0 sn`, `endByTimeout()` finishes the game and opens the analytics modal.
 
 ---
 
 ## 4. JavaScript Libraries & Open Datasets
 
 ### Libraries Used
-- **Leaflet.js (`1.9.4`):** Used for the interactive web map, tile basemaps, metric scale bar, custom animated `L.divIcon` radar markers, `L.circle` tolerance zones, `L.polyline` distance vectors, tooltips, and `flyToBounds` camera framing.
-- **Chart.js (`4.4.3`) *(Bonus Library)*:** Used in `js/analytics.js` to build a post-game dual-axis combo chart showing each round's spatial error in kilometers (color-coded green/orange bars) alongside the points earned (blue line), with detailed hover tooltips.
+- **Leaflet.js (`1.9.4`):** Powers the interactive Turkey map, basemap switching, metric scale control, custom animated `L.divIcon` markers, `L.circle` tolerance zones, `L.polyline` distance vectors, tooltips, and `flyToBounds` transitions.
+- **Chart.js (`4.4.3`) *(Bonus Library)*:** Renders the post-game dual-axis bar/line chart in `js/analytics.js` comparing spatial error distance (km) against round score (pts) with interactive tooltips.
 
 ### Open Datasets & Basemaps
-- **`data/missions.geojson`:** A hand-curated RFC 7946 `FeatureCollection` with 15 real-world `[longitude, latitude]` targets referencing open data from the **USGS Earthquake Hazards Program**, **UNESCO World Heritage Centre**, and **Natural Earth**.
-- **Basemaps:** Uses **Esri World Light Gray Base** (clean white, label-free) as the default basemap, **Esri World Physical Map** as an alternate label-free relief view, and **OpenStreetMap** as a standard fallback option. *(During live testing on GitHub Pages, I discovered that CARTO basemap tiles began requiring an API key, so I replaced them with Esri's API-key-free light gray tiles and added an automatic `tileerror` fallback to OpenStreetMap.)*
+- **`data/missions.geojson`:** RFC 7946 `FeatureCollection` containing 15 real Turkish `[longitude, latitude]` targets compiled from open geographic sources (**AFAD / USGS**, **UNESCO World Heritage Centre**, and **Natural Earth**).
+- **Basemaps:** Uses API-key-free **Esri World Light Gray Base** (clean white, label-free) by default, with **Esri World Physical Map** and **OpenStreetMap** available via the *Harita Değiştir* button (plus automatic `tileerror` fallback).
 
 ---
 
 ## 5. Implementation Highlights
 
 ### Three Implemented Event Handlers
-1. **Map `mousemove` Handler (`js/main.js`):** Tracks the user's cursor over the Leaflet map and continuously updates the bottom-right `#coord-readout` badge with the current latitude and longitude.
-2. **Map `click` Handler (`js/main.js`):** Captures the clicked coordinates during an active round, pauses the timer, runs `gameEngine.evaluateGuess()` to compute Haversine distance and bonuses, draws the animated radar overlays and distance polyline on the map, and updates the HUD and feedback panel.
-3. **UI `click` & `keydown` Handlers (`js/main.js`):** Handles game controls (`#btn-start`, `#btn-next`, `#btn-help`, `#btn-analytics`, `#btn-recenter`, `#btn-basemap`), welcome/analytics modal buttons, and keyboard shortcuts (`Enter`/`Space` to move to the next round, `Escape` to close modals).
+1. **Map `mousemove` Handler (`js/main.js`):** Tracks pointer movement across Turkey and updates `#coord-readout` with live latitude and longitude.
+2. **Map `click` Handler (`js/main.js`):** Submits the clicked coordinate, pauses the timer, runs `gameEngine.evaluateGuess()`, draws animated radar rings and the dashed distance line, triggers confetti/toast animations, and updates the HUD.
+3. **UI `click` & `keydown` Handlers (`js/main.js`):** Handles all 3D action buttons (`#btn-start`, `#btn-next`, `#btn-help`, `#btn-analytics`, `#btn-recenter`, `#btn-basemap`), modal dismissal, and keyboard shortcuts (`Enter`/`Space` for next question, `Escape` to close modals).
 
 ### How I Benefited from Closures
-Instead of storing game variables globally on `window`, I used factory functions that rely on **closures** to keep internal state private and cleanly separated by module:
-- **`createGameEngine()` (`js/game.js`):** Keeps `deck`, `currentIndex`, `score`, `highScore`, `lives`, `streak`, `phase`, and `roundResults` private and exposes only controlled methods (`start`, `evaluateGuess`, `nextRound`, `endByTimeout`, `getState`).
-- **`createMissionTimer()` (`js/timer.js`):** Encapsulates `remainingSeconds`, `intervalId`, and `roundStartedAt`, ensuring intervals are cleanly cleared and paused/resumed without leaking timers.
-- **`createMapController()` (`js/map.js`):** Encapsulates the Leaflet `map` instance, active `tileLayer`, `activeIndex`, and `roundLayer`.
-- **`createAnalyticsController()` (`js/analytics.js`):** Encapsulates `chartInstance` so the previous Chart.js object is always destroyed before drawing a new chart on replay.
+I organized the JavaScript into four factory-function modules that use **closures** to protect internal state instead of using global variables:
+- **`createGameEngine()` (`js/game.js`):** Keeps `deck`, `currentIndex`, `score`, `highScore`, `lives`, `streak`, `phase`, and `roundResults` private.
+- **`createMissionTimer()` (`js/timer.js`):** Keeps `remainingSeconds`, `intervalId`, and `roundStartedAt` private for clean pause/resume and interval cleanup.
+- **`createMapController()` (`js/map.js`):** Keeps the Leaflet `map`, `tileLayer`, `activeIndex`, and `roundLayer` encapsulated.
+- **`createAnalyticsController()` (`js/analytics.js`):** Keeps `chartInstance` private so old Chart.js charts are destroyed cleanly before re-rendering.
 
 ### How I Interacted with the DOM
-- **Live HUD & Progress Updates:** Dynamically updates text and `aria-label` attributes on `#hud-round`, `#hud-timer`, `#hud-score`, `#hud-lives`, and `#hud-highscore`, adjusts `#timer-progress-fill` width percentage, and builds the 10-dot `#round-stepper` via `document.createElement("span")`.
-- **Dynamic Feedback & Animations:** Updates `#feedback-box` with hit/miss styling and geographic facts, toggles classes (`crosshair-active`, `urgent`, `bonus-flash`, `hidden`), and triggers CSS animations (`score-pop`, `panel-shake`) cleanly.
-- **Modals & Canvas Rendering:** Controls visibility and accessibility (`aria-hidden`) for both the `#welcome-modal` and `#analytics-modal`, populates the 4 summary KPI cards, and renders the Chart.js graph into `<canvas id="performance-chart">`.
+- **Dynamic HUD & Progress Stepper:** Updates `#hud-round`, `#hud-timer`, `#hud-score`, `#hud-lives`, `#hud-highscore`, `#timer-progress-fill` width, and generates the 10-dot `#round-stepper` using `document.createElement("span")`.
+- **In-Game Animations & Confetti:** Dynamically spawns and cleans up animated `.confetti-piece` elements inside `#confetti-layer`, shows floating `#map-toast` messages, updates `#feedback-box`, and triggers CSS keyframe animations (`score-pop`, `panel-shake`).
+- **Modals & Chart Canvas:** Manages `#welcome-modal` and `#analytics-modal` visibility/`aria-hidden` states, updates KPI cards, and renders Chart.js onto `<canvas id="performance-chart">`.
 
 ---
 
-## 6. Development Steps & Project Structure
-
-I developed the project incrementally using regular, atomic Git commits:
-1. Initialized the repository and created the base HTML/CSS/JS folder structure (`index.html`, `css/`, `js/`, `data/`, `assets/images/`).
-2. Integrated Leaflet.js with basemap controls, metric scale, and the main HUD layout.
-3. Created the 15-target RFC 7946 GeoJSON dataset (`data/missions.geojson`) and async loader (`js/data.js`).
-4. Implemented the core game engine (`js/game.js`), Haversine distance calculation, 3-level progression, and radar pulse/polyline animations.
-5. Added the 60-second temporal countdown timer (`js/timer.js`), speed/+3s bonuses, and `localStorage` high-score saving.
-6. Added the bonus Chart.js post-game spatial accuracy analytics modal (`js/analytics.js`).
-7. Enhanced the UI into a clean pure-white Turkish interface with a "Nasıl Oynanır?" startup guide, 10-round stepper, map legend, and switched basemaps to Esri World Light Gray Base so tiles load reliably on GitHub Pages.
+## 6. Project Structure
 
 ```text
 GEOGAME/
 ├── index.html                        # Main HTML5 entry point (GitHub Pages)
 ├── css/
-│   └── style.css                     # Pure white minimalist theme & keyframe animations
+│   └── style.css                     # Pure white playful UI, 3D buttons & animations
 ├── js/
-│   ├── data.js                       # Async GeoJSON loader & level-based deck shuffler
+│   ├── data.js                       # Async GeoJSON loader & level-based shuffler
 │   ├── game.js                       # Closure-based game engine, Haversine math & localStorage
-│   ├── timer.js                      # Closure-based 60s countdown timer & elapsed time tracker
-│   ├── map.js                        # Leaflet controller, Esri/OSM basemaps & radar overlays
-│   ├── analytics.js                  # Chart.js post-game spatial debrief modal
-│   └── main.js                       # DOM updates, modal controls & event handlers
+│   ├── timer.js                      # Closure-based 60s timer & response-time tracker
+│   ├── map.js                        # Turkey-centered Leaflet controller & radar overlays
+│   ├── analytics.js                  # Chart.js post-game spatial accuracy modal
+│   └── main.js                       # DOM updates, confetti/toast animations & event handlers
 ├── data/
-│   └── missions.geojson              # 15 curated seismic & landmark GeoJSON features (Turkish)
+│   └── missions.geojson              # 15 Turkish cultural, natural & seismic GeoJSON points
 └── assets/
     └── images/
         ├── layout-sketch.svg         # Initial frontend wireframe sketch
-        ├── screenshot-welcome.png    # Live screenshot of the "Nasıl Oynanır?" screen
-        └── screenshot-gameplay.png   # Live screenshot of active gameplay
+        ├── screenshot-welcome.png    # Animated "Nasıl Oynanır?" startup screen
+        └── screenshot-gameplay.png   # Active Turkey map gameplay screen
 ```
 
 ---
 
 ## 7. What I Learned from AI
 
-Key Web GIS and JavaScript concepts I reinforced while learning with AI:
-- **JavaScript Closures for State Encapsulation:** Understanding how factory functions keep internal state private across event callbacks without polluting the global scope.
-- **GeoJSON vs. Leaflet Coordinate Order:** Learning why RFC 7946 GeoJSON stores points as `[longitude, latitude]` while Leaflet expects `[latitude, longitude]`.
-- **Haversine Great-Circle Distance:** Understanding how spherical trigonometry (`R = 6,371 km`) calculates accurate surface distances between two geographic coordinates.
-- **Leaflet Overlays, Tile Fallbacks & Chart.js Lifecycle:** Learning how to pair Leaflet `L.divIcon` with CSS `@keyframes`, call `map.invalidateSize()` after layout changes, handle tile server fallbacks, and destroy old Chart.js instances before re-rendering.
-- **Clean Git Workflow:** Learning how to organize work into small, descriptive English commits that clearly document each stage of the project.
+Key Web GIS and JavaScript concepts I learned and reinforced:
+- **JavaScript Closures for State Encapsulation:** How factory functions keep mutable state private across event callbacks without global variables.
+- **GeoJSON vs. Leaflet Coordinate Order:** Why RFC 7946 GeoJSON uses `[longitude, latitude]` while Leaflet expects `[latitude, longitude]`.
+- **Haversine Great-Circle Distance:** How spherical trigonometry (`R = 6,371 km`) measures real surface distance in kilometers between two coordinates.
+- **Leaflet Map Bounds, Tile Fallbacks & Chart.js Lifecycle:** How to constrain a Leaflet map to Turkey (`maxBounds`), handle tile fallbacks, pair `L.divIcon` with CSS `@keyframes`, and destroy old Chart.js instances cleanly.
+- **Clean Git Workflow:** Organizing each feature and improvement into clear, descriptive English commits.

@@ -1,11 +1,18 @@
-// Main entry point & DOM/event wiring for Deprem & Coğrafya Radarı
+// Türkiye Harita Avı — Ana DOM, olay dinleyicileri ve eğlenceli animasyon yönetimi
 
 const LEVEL_LABELS = {
-  1: "Seviye 1 · Küresel",
-  2: "Seviye 2 · Bölgesel",
-  3: "Seviye 3 · Hassas",
+  1: "Seviye 1 · Kolay",
+  2: "Seviye 2 · Orta",
+  3: "Seviye 3 · Zor",
 };
 
+const CATEGORY_LABELS = {
+  deprem: "🌋 Deprem / Volkan",
+  doga: "🏞️ Doğa Harikası",
+  kultur: "🏛️ Tarihi / Kültür",
+};
+
+const CONFETTI_COLORS = ["#2563eb", "#22c55e", "#f59e0b", "#ef4444", "#a855f7", "#06b6d4"];
 const MISSION_TIME_SECONDS = 60;
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -13,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const gameEngine = createGameEngine();
   const analyticsController = createAnalyticsController();
 
-  // DOM references
+  // DOM referansları
   const hudRound = document.getElementById("hud-round");
   const hudTimer = document.getElementById("hud-timer");
   const hudScore = document.getElementById("hud-score");
@@ -30,6 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const missionClue = document.getElementById("mission-clue");
   const feedbackBox = document.getElementById("feedback-box");
   const coordReadout = document.getElementById("coord-readout");
+  const mapToast = document.getElementById("map-toast");
+  const confettiLayer = document.getElementById("confetti-layer");
+
   const helpBtn = document.getElementById("btn-help");
   const startBtn = document.getElementById("btn-start");
   const nextBtn = document.getElementById("btn-next");
@@ -37,19 +47,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const recenterBtn = document.getElementById("btn-recenter");
   const basemapBtn = document.getElementById("btn-basemap");
 
-  // Welcome modal references
   const welcomeModal = document.getElementById("welcome-modal");
   const welcomeCloseBtn = document.getElementById("btn-welcome-close");
   const welcomeExploreBtn = document.getElementById("btn-welcome-explore");
   const welcomeStartBtn = document.getElementById("btn-welcome-start");
 
-  // Analytics modal references
   const modalBackdrop = document.getElementById("analytics-modal");
   const modalCloseBtn = document.getElementById("btn-modal-close");
   const modalInspectBtn = document.getElementById("btn-modal-inspect");
   const modalReplayBtn = document.getElementById("btn-modal-replay");
 
   let missionCatalog = [];
+  let toastTimeout = null;
 
   function openWelcomeModal() {
     welcomeModal.classList.remove("hidden");
@@ -60,6 +69,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     welcomeModal.classList.add("hidden");
     welcomeModal.setAttribute("aria-hidden", "true");
     mapController.invalidate();
+  }
+
+  function showMapToast(text, isMiss = false) {
+    if (toastTimeout) clearTimeout(toastTimeout);
+    mapToast.textContent = text;
+    mapToast.className = isMiss ? "map-toast miss-toast" : "map-toast";
+    void mapToast.offsetWidth;
+    toastTimeout = setTimeout(() => {
+      mapToast.classList.add("hidden");
+    }, 1450);
+  }
+
+  function launchConfetti(count = 24) {
+    confettiLayer.innerHTML = "";
+    for (let i = 0; i < count; i += 1) {
+      const piece = document.createElement("span");
+      piece.className = "confetti-piece";
+      piece.style.left = `${10 + Math.random() * 80}%`;
+      piece.style.backgroundColor = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+      piece.style.animationDelay = `${Math.random() * 0.25}s`;
+      confettiLayer.appendChild(piece);
+    }
+    setTimeout(() => {
+      confettiLayer.innerHTML = "";
+    }, 1800);
   }
 
   function renderLives(lives, maxLives) {
@@ -87,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderStreak(streak) {
     if (streak >= 2) {
-      streakPill.textContent = `${streak}x Seri`;
+      streakPill.textContent = `🔥 ${streak}x Seri`;
       streakPill.classList.remove("hidden");
     } else {
       streakPill.classList.add("hidden");
@@ -116,27 +150,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     hudHighScore.textContent = state.highScore.toLocaleString("tr-TR");
 
     const hits = state.results.filter((r) => r.isHit).length;
-    let reasonText = "10 turun tamamı tamamlandı!";
+    let reasonText = "Harikasın! 10 sorunun tamamını bitirdin!";
     if (state.endReason === "no_lives") {
-      reasonText = "Tüm can hakların tükendi.";
+      reasonText = "3 can hakkın tükendi, tekrar dene!";
     } else if (state.endReason === "timeout") {
-      reasonText = "Süre doldu! 60 saniyelik radar penceresi kapandı.";
+      reasonText = "60 saniye doldu!";
       feedbackBox.className = "feedback-box miss";
       triggerAnimation(missionPanel, "panel-shake");
       feedbackBox.innerHTML =
-        `<strong>Süre Doldu!</strong> ${reasonText}<br/>` +
-        `Toplam Puan: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
-        `(${hits}/${state.results.length} isabet) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
+        `<strong>⏱️ Süre Doldu!</strong> ${reasonText}<br/>` +
+        `Puanın: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
+        `(${hits}/${state.results.length} doğru) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
+    }
+
+    if (state.endReason === "completed") {
+      launchConfetti(36);
     }
 
     if (state.endReason !== "timeout") {
       feedbackBox.innerHTML +=
-        `<br/><br/><strong>Görev Tamamlandı:</strong> ${reasonText} ` +
-        `Toplam Puan: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
-        `(${hits}/${state.results.length} isabet) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
+        `<br/><br/><strong>🏁 Oyun Bitti:</strong> ${reasonText} ` +
+        `Puanın: <strong>${state.score.toLocaleString("tr-TR")}</strong> ` +
+        `(${hits}/${state.results.length} doğru) · Rekor: <strong>${state.highScore.toLocaleString("tr-TR")}</strong>.`;
     }
 
-    startBtn.textContent = "Tekrar Oyna";
+    startBtn.textContent = "🔄 Tekrar Oyna";
     startBtn.classList.remove("hidden");
     analyticsBtn.classList.remove("hidden");
     nextBtn.classList.add("hidden");
@@ -166,13 +204,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderStreak(state.streak);
 
     difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Seviye ${mission.level}`;
-    targetCategory.textContent = mission.category === "seismic" ? "Sismik Bölge" : "Coğrafi Nokta";
-    missionTitle.textContent = `Hedef #${state.round}`;
+    targetCategory.textContent = CATEGORY_LABELS[mission.category] || mission.category;
+    missionTitle.textContent = `Soru #${state.round}`;
     missionMeta.textContent = `Bölge: ${mission.region} · Tolerans: ${mission.maxToleranceKm} km`;
     missionClue.textContent = mission.clue;
 
     feedbackBox.className = "feedback-box";
-    feedbackBox.textContent = "Süre dolmadan haritada tahmin ettiğin noktaya tıkla.";
+    feedbackBox.textContent = "Türkiye haritasında tahmin ettiğin yere tıkla! 🎯";
 
     nextBtn.classList.add("hidden");
     startBtn.classList.add("hidden");
@@ -191,13 +229,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     missionTimer.start();
   }
 
-  // Event Handler 1: Map mousemove for live geographic coordinate tracking
+  // Event Handler 1: Harita üzerinde canlı enlem/boylam takibi
   mapController.map.on("mousemove", (event) => {
     const { lat, lng } = event.latlng;
     coordReadout.textContent = `Enlem: ${lat.toFixed(2)}°, Boylam: ${lng.toFixed(2)}°`;
   });
 
-  // Event Handler 2: Map click to submit coordinate guess and evaluate Haversine distance
+  // Event Handler 2: Haritaya tıklayıp koordinat tahmini gönderme
   mapController.map.on("click", (event) => {
     const currentState = gameEngine.getState();
     if (currentState.phase !== "playing") return;
@@ -221,17 +259,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderStreak(state.streak);
     missionTitle.textContent = target.name;
     missionMeta.textContent =
-      `Gerçek Konum: ${target.lat.toFixed(2)}°, ${target.lon.toFixed(2)}° · ${target.region}`;
+      `Koordinat: ${target.lat.toFixed(2)}°, ${target.lon.toFixed(2)}° · ${target.region}`;
 
     if (record.isHit) {
       triggerAnimation(hudScore, "score-pop");
+      launchConfetti(18);
+      showMapToast(`🎯 Süper! +${record.points.toLocaleString("tr-TR")} puan`);
 
       const bonuses = [];
       if (record.speedBonus > 0) bonuses.push(`+${record.speedBonus} hız`);
       if (record.streakBonus > 0) bonuses.push(`+${record.streakBonus} seri`);
       if (record.timeBonusSeconds > 0) {
         missionTimer.addBonusSeconds(record.timeBonusSeconds);
-        bonuses.push(`+${record.timeBonusSeconds} sn süre`);
+        bonuses.push(`+${record.timeBonusSeconds} sn`);
         hudTimer.classList.add("bonus-flash");
         setTimeout(() => hudTimer.classList.remove("bonus-flash"), 700);
       }
@@ -239,16 +279,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       feedbackBox.className = "feedback-box hit";
       feedbackBox.innerHTML =
-        `<strong>Hedef Kilitlendi!</strong> ${record.distanceKm.toLocaleString("tr-TR")} km sapma · ${record.elapsedSeconds} sn ` +
+        `<strong>🎯 Tam İsabet!</strong> Sadece ${record.distanceKm.toLocaleString("tr-TR")} km uzaklıkta ` +
         `(+${record.points.toLocaleString("tr-TR")} puan${bonusText})<br/>` +
-        `<span class="mission-fact">${target.fact}</span>`;
+        `<span class="mission-fact">💡 ${target.fact}</span>`;
     } else {
       triggerAnimation(missionPanel, "panel-shake");
+      showMapToast(`😅 ${record.distanceKm.toLocaleString("tr-TR")} km uzakta (-1 can)`, true);
       feedbackBox.className = "feedback-box miss";
       feedbackBox.innerHTML =
-        `<strong>Menzil Dışı!</strong> ${record.distanceKm.toLocaleString("tr-TR")} km sapma ` +
-        `(maks. ${record.maxToleranceKm} km). -1 can.<br/>` +
-        `<span class="mission-fact">${target.fact}</span>`;
+        `<strong>Biraz Uzak Kaldı!</strong> ${record.distanceKm.toLocaleString("tr-TR")} km mesafe ` +
+        `(tolerans ${record.maxToleranceKm} km). -1 can.<br/>` +
+        `<span class="mission-fact">💡 ${target.fact}</span>`;
     }
 
     if (state.phase === "game_over") {
@@ -258,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Event Handler 3: Buttons, welcome guide & keyboard shortcuts
+  // Event Handler 3: Butonlar, karşılama ekranı ve klavye kısayolları
   helpBtn.addEventListener("click", openWelcomeModal);
   welcomeCloseBtn.addEventListener("click", closeWelcomeModal);
   welcomeExploreBtn.addEventListener("click", closeWelcomeModal);
@@ -326,24 +367,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Initialize persisted high score, round stepper, and timer display
   const initialState = gameEngine.getState();
   hudHighScore.textContent = initialState.highScore.toLocaleString("tr-TR");
   renderRoundStepper(initialState);
   renderTimer(MISSION_TIME_SECONDS, MISSION_TIME_SECONDS);
 
-  // Load GeoJSON mission dataset
+  // Türkiye GeoJSON veri setini yükle
   try {
     const dataset = await loadMissionDataset();
     missionCatalog = dataset.missions;
-    const seismicCount = missionCatalog.filter((m) => m.category === "seismic").length;
-    const landmarkCount = missionCatalog.filter((m) => m.category === "landmark").length;
 
     startBtn.disabled = false;
     welcomeStartBtn.disabled = false;
     feedbackBox.textContent =
-      `GeoJSON hazır: ${missionCatalog.length} hedef ` +
-      `(${seismicCount} sismik bölge, ${landmarkCount} coğrafi nokta). ${MISSION_TIME_SECONDS} saniyen var — "Oyuna Başla"ya tıkla!`;
+      `${missionCatalog.length} Türkiye noktası hazır! 60 saniyede en yüksek puanı toplamak için "Oyuna Başla"ya tıkla.`;
 
     if (new URLSearchParams(window.location.search).has("play")) {
       handleStartGame();
