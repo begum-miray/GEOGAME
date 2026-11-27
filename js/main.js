@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     difficultyBadge.textContent = LEVEL_LABELS[mission.level] || `Seviye ${mission.level}`;
     targetCategory.textContent = mission.category === "seismic" ? "Sismik Bölge" : "Coğrafi Nokta";
     missionTitle.textContent = `Hedef #${state.round}`;
-    missionMeta.textContent = `Tolerans: ${mission.maxToleranceKm} km · Hassasiyet Bonusu: +3 sn`;
+    missionMeta.textContent = `Bölge: ${mission.region} · Tolerans: ${mission.maxToleranceKm} km`;
     missionClue.textContent = mission.clue;
 
     feedbackBox.className = "feedback-box";

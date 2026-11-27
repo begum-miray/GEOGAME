@@ -15,14 +15,14 @@
       "geometry": { "type": "Point", "coordinates": [-122.4194, 37.7749] },
       "properties": {
         "id": "L1-01",
-        "name": "San Andreas Fayı (San Francisco Körfezi)",
+        "name": "San Andreas Fayı (San Francisco, ABD)",
         "category": "seismic",
         "level": 1,
-        "region": "Kuzey Amerika",
+        "region": "Kuzey Amerika · ABD Batı Kıyısı",
         "source": "USGS Earthquake Hazards Program",
-        "clue": "Kaliforniya'nın batı kıyısı boyunca uzanan, 1906 depremiyle bilinen büyük sağ yanal doğrultu atımlı fay hattı.",
+        "clue": "ABD'nin batı kıyısındaki Kaliforniya eyaletinde, Pasifik Okyanusu kıyısındaki San Francisco şehrinde bulunan ünlü deprem fay hattı.",
         "fact": "San Andreas Fayı, Pasifik Levhası ile Kuzey Amerika Levhası arasındaki tektonik sınırı oluşturur.",
-        "maxToleranceKm": 900
+        "maxToleranceKm": 1100
       }
     },
     {
@@ -30,14 +30,14 @@
       "geometry": { "type": "Point", "coordinates": [31.1342, 29.9792] },
       "properties": {
         "id": "L1-02",
-        "name": "Giza Piramitleri",
+        "name": "Giza Piramitleri (Mısır)",
         "category": "landmark",
         "level": 1,
-        "region": "Kuzey Afrika",
+        "region": "Kuzey Afrika · Mısır",
         "source": "UNESCO World Heritage Centre",
-        "clue": "Akdeniz'e açılan Nil Deltası'nın hemen güneyinde, Nil Nehri'nin batısındaki kireçtaşı platosunda yükselen antik anıt mezarlar.",
+        "clue": "Kuzey Afrika'da, Mısır'ın başkenti Kahire yakınlarında ve Akdeniz'e dökülen Nil Nehri'nin hemen kıyısında bulunan dünyaca ünlü piramitler.",
         "fact": "Büyük Giza Piramidi, Antik Dünyanın Yedi Harikası içinde günümüze ulaşan tek yapıdır.",
-        "maxToleranceKm": 900
+        "maxToleranceKm": 1100
       }
     },
     {
@@ -45,14 +45,14 @@
       "geometry": { "type": "Point", "coordinates": [138.7274, 35.3606] },
       "properties": {
         "id": "L1-03",
-        "name": "Fuji Dağı",
+        "name": "Fuji Dağı (Japonya)",
         "category": "seismic",
         "level": 1,
-        "region": "Doğu Asya",
+        "region": "Doğu Asya · Japonya",
         "source": "USGS & UNESCO World Heritage Centre",
-        "clue": "Pasifik Ateş Çemberi üzerinde, Honşu Adası'nda Tokyo'nun güneybatısında yer alan simetrik stratovolkan.",
-        "fact": "Fuji Dağı üç farklı tektonik levhanın birleştiği aktif bir tektonik kavşak yakınında bulunur.",
-        "maxToleranceKm": 900
+        "clue": "Doğu Asya'daki ada ülkesi Japonya'nın orta kesiminde, başkent Tokyo'nun hemen güneybatısında yükselen ünlü volkanik dağ.",
+        "fact": "Fuji Dağı üç farklı tektonik levhanın birleştiği Pasifik Ateş Çemberi üzerinde bulunur.",
+        "maxToleranceKm": 1100
       }
     },
     {
@@ -60,14 +60,14 @@
       "geometry": { "type": "Point", "coordinates": [147.6992, -18.2871] },
       "properties": {
         "id": "L1-04",
-        "name": "Büyük Set Resifi",
+        "name": "Büyük Set Resifi (Avustralya)",
         "category": "landmark",
         "level": 1,
-        "region": "Okyanusya",
+        "region": "Okyanusya · Avustralya",
         "source": "UNESCO World Heritage Centre",
-        "clue": "Avustralya'nın kuzeydoğu kıyısı boyunca Mercan Denizi'nde 2.300 km'den fazla uzanan dünyanın en büyük mercan resifi sistemi.",
-        "fact": "2.900'den fazla ayrı resiften oluşan bu sistem uzaydan görülebilen en büyük canlı yapıdır.",
-        "maxToleranceKm": 900
+        "clue": "Avustralya kıtasının kuzeydoğu kıyısı boyunca uzanan, uzaydan bile görülebilen dünyanın en büyük mercan resifi.",
+        "fact": "2.900'den fazla ayrı resiften oluşan Büyük Set Resifi, dünyanın en büyük canlı yapısıdır.",
+        "maxToleranceKm": 1100
       }
     },
     {
@@ -75,14 +75,14 @@
       "geometry": { "type": "Point", "coordinates": [-72.5450, -13.1631] },
       "properties": {
         "id": "L1-05",
-        "name": "Machu Picchu",
+        "name": "Machu Picchu (Peru)",
         "category": "landmark",
         "level": 1,
-        "region": "Güney Amerika",
+        "region": "Güney Amerika · Peru",
         "source": "UNESCO World Heritage Centre",
-        "clue": "Güney Peru'da And Dağları'nın yüksek bir sırtında, Kutsal Vadi'nin üzerinde kurulu 15. yüzyıl İnka kalesi.",
+        "clue": "Güney Amerika'nın batısındaki Peru ülkesinde, And Dağları'nın zirvelerinde kurulu dünyaca ünlü antik İnka kenti.",
         "fact": "İnka mühendisleri aktif And deprem kuşağına dayanıklı harçsız kilitli taş duvarlar inşa etmiştir.",
-        "maxToleranceKm": 900
+        "maxToleranceKm": 1100
       }
     },
     {
@@ -90,14 +90,14 @@
       "geometry": { "type": "Point", "coordinates": [29.9169, 40.7654] },
       "properties": {
         "id": "L2-01",
-        "name": "Kuzey Anadolu Fayı (İzmit Körfezi)",
+        "name": "Kuzey Anadolu Fayı (İzmit, Türkiye)",
         "category": "seismic",
         "level": 2,
-        "region": "Anadolu",
+        "region": "Türkiye · Marmara Bölgesi",
         "source": "USGS Earthquake Hazards Program",
-        "clue": "Marmara Denizi'nin doğu ucuna dayanan, yaklaşık 1.500 km uzunluğundaki sağ yanal doğrultu atımlı fay sisteminin batı kesimi.",
+        "clue": "Türkiye'nin kuzeybatısında, İstanbul'un hemen doğusunda ve Marmara Denizi'nin doğu ucunda (İzmit Körfezi) yer alan aktif fay hattı.",
         "fact": "Kuzey Anadolu Fayı, Anadolu Levhası'nın Avrasya'ya göre batıya doğru hareketini karşılar.",
-        "maxToleranceKm": 550
+        "maxToleranceKm": 750
       }
     },
     {
@@ -105,14 +105,14 @@
       "geometry": { "type": "Point", "coordinates": [-21.9426, 64.1466] },
       "properties": {
         "id": "L2-02",
-        "name": "Orta Atlantik Sırtı (Reykjavík)",
+        "name": "Orta Atlantik Sırtı (İzlanda)",
         "category": "seismic",
         "level": 2,
-        "region": "Kuzey Atlantik",
+        "region": "Kuzey Avrupa · İzlanda Adası",
         "source": "USGS & Natural Earth",
-        "clue": "Kuzey Amerika ve Avrasya levhalarının birbirinden uzaklaştığı okyanus ortası sırtın kara üzerine çıktığı volkanik ada başkenti.",
-        "fact": "Yakındaki Þingvellir bölgesinde iki tektonik levha her yıl yaklaşık 2 santimetre uzaklaşır.",
-        "maxToleranceKm": 550
+        "clue": "Kuzey Atlas Okyanusu'nda, Grönland ile Avrupa arasında tek başına duran volkanik ada ülkesi İzlanda'nın başkenti Reykjavík.",
+        "fact": "İzlanda'da Kuzey Amerika ve Avrasya levhaları her yıl yaklaşık 2 santimetre birbirinden uzaklaşır.",
+        "maxToleranceKm": 750
       }
     },
     {
@@ -120,14 +120,14 @@
       "geometry": { "type": "Point", "coordinates": [86.9250, 27.9881] },
       "properties": {
         "id": "L2-03",
-        "name": "Everest Dağı (Himalaya Çarpışma Kuşağı)",
+        "name": "Everest Dağı (Nepal / Himalayalar)",
         "category": "landmark",
         "level": 2,
-        "region": "Güney Asya",
+        "region": "Güney Asya · Hindistan'ın Kuzeyi",
         "source": "Natural Earth",
-        "clue": "Hindistan ve Avrasya levhalarının kıtasal çarpışmasıyla yükselen, Nepal–Tibet sınırındaki dünyanın en yüksek zirvesi.",
-        "fact": "Devam eden tektonik sıkışma Himalayaları her yıl birkaç milimetre daha yükseltmektedir.",
-        "maxToleranceKm": 550
+        "clue": "Hindistan'ın hemen kuzeyinde, Nepal ile Çin (Tibet) sınırındaki Himalaya Dağları'nda bulunan dünyanın en yüksek dağı.",
+        "fact": "Devam eden tektonik çarpışma Himalayaları her yıl birkaç milimetre daha yükseltmektedir.",
+        "maxToleranceKm": 750
       }
     },
     {
@@ -135,14 +135,14 @@
       "geometry": { "type": "Point", "coordinates": [142.3720, 38.2970] },
       "properties": {
         "id": "L2-04",
-        "name": "Tohoku Dalma-Batma Zonu",
+        "name": "Tohoku Deprem Bölgesi (Japonya Doğusu)",
         "category": "seismic",
         "level": 2,
-        "region": "Kuzeybatı Pasifik",
+        "region": "Doğu Asya · Japonya Kuzeydoğusu",
         "source": "USGS Earthquake Hazards Program",
-        "clue": "Japonya Çukuru boyunca Sendai açıklarında yer alan ve 2011 Mw 9.1 depremi ile tsunamiye yol açan megathrust kuşağı.",
-        "fact": "2011 kırılması Honşu Adası'nın bir bölümünü doğuya doğru 2 metreden fazla kaydırmıştır.",
-        "maxToleranceKm": 550
+        "clue": "Japonya'nın kuzeydoğu kıyısı (Sendai açıkları) boyunca uzanan ve 2011 yılındaki büyük Japonya depremine yol açan okyanus çukuru.",
+        "fact": "2011 kırılması Japonya'nın ana adasını doğuya doğru 2 metreden fazla kaydırmıştır.",
+        "maxToleranceKm": 750
       }
     },
     {
@@ -150,14 +150,14 @@
       "geometry": { "type": "Point", "coordinates": [-5.3536, 36.1408] },
       "properties": {
         "id": "L2-05",
-        "name": "Cebelitarık Boğazı",
+        "name": "Cebelitarık Boğazı (İspanya – Fas)",
         "category": "landmark",
         "level": 2,
-        "region": "Batı Akdeniz",
+        "region": "Batı Akdeniz · İspanya'nın Güneyi",
         "source": "Natural Earth",
-        "clue": "İber Yarımadası ile Kuzey Afrika'yı birbirinden ayıran ve Atlas Okyanusu'nu Akdeniz'e bağlayan dar deniz geçidi.",
+        "clue": "İspanya'nın en güney ucu ile Fas'ın (Kuzey Afrika) en kuzey ucu arasında yer alan, Akdeniz'i Atlas Okyanusu'na bağlayan dar boğaz.",
         "fact": "En dar noktasında Avrupa ile Afrika kıtaları arasındaki mesafe yalnızca 14 kilometredir.",
-        "maxToleranceKm": 550
+        "maxToleranceKm": 750
       }
     },
     {
@@ -165,14 +165,14 @@
       "geometry": { "type": "Point", "coordinates": [-73.2459, -39.8142] },
       "properties": {
         "id": "L3-01",
-        "name": "Valdivia Dalma-Batma Zonu (Şili)",
+        "name": "Valdivia Deprem Zonu (Güney Şili)",
         "category": "seismic",
         "level": 3,
-        "region": "Güney Andlar",
+        "region": "Güney Amerika · Şili Güney Kıyısı",
         "source": "USGS Earthquake Hazards Program",
-        "clue": "Nazca Levhası'nın Güney Amerika altına daldığı, tarihte ölçülen en büyük depremin (Mw 9.5, 1960) meydana geldiği Güney Şili kıyısı.",
-        "fact": "1960 Valdivia depremi Hawaii, Japonya ve Filipinler'e ulaşan dev bir Pasifik tsunamisi oluşturmuştur.",
-        "maxToleranceKm": 300
+        "clue": "Güney Amerika'nın güneybatısındaki ince uzun Şili ülkesinin güney kıyısında, 1960'ta tarihin en büyük depreminin (9.5) yaşandığı bölge.",
+        "fact": "1960 Valdivia depremi tüm Pasifik Okyanusu'nu aşarak Japonya'ya kadar ulaşan dev bir tsunami oluşturmuştur.",
+        "maxToleranceKm": 450
       }
     },
     {
@@ -180,14 +180,14 @@
       "geometry": { "type": "Point", "coordinates": [34.8289, 38.6431] },
       "properties": {
         "id": "L3-02",
-        "name": "Kapadokya Volkanik Bölgesi",
+        "name": "Kapadokya (Nevşehir, Türkiye)",
         "category": "landmark",
         "level": 3,
-        "region": "İç Anadolu",
+        "region": "Türkiye · İç Anadolu",
         "source": "UNESCO World Heritage Centre",
-        "clue": "Erciyes ve Hasan Dağı'nın antik püskürmeleriyle oluşan tüf tabakalarının aşınmasıyla peribacalarının şekillendiği İç Anadolu platosu.",
+        "clue": "Türkiye'nin tam ortasında, Ankara'nın güneydoğusundaki İç Anadolu Bölgesi'nde (Nevşehir) peribacalarıyla ünlü volkanik bölge.",
         "fact": "Yumuşak volkanik tüfler, tarih boyunca çok katlı yeraltı şehirleri ve kaya kiliselerinin oyulmasına olanak tanımıştır.",
-        "maxToleranceKm": 300
+        "maxToleranceKm": 450
       }
     },
     {
@@ -195,14 +195,14 @@
       "geometry": { "type": "Point", "coordinates": [95.3238, 5.5483] },
       "properties": {
         "id": "L3-03",
-        "name": "Sunda Megathrust Kuşağı (Banda Açe)",
+        "name": "Sumatra Fay Kuşağı (Endonezya Kuzeybatısı)",
         "category": "seismic",
         "level": 3,
-        "region": "Güneydoğu Asya",
+        "region": "Güneydoğu Asya · Endonezya (Sumatra)",
         "source": "USGS Earthquake Hazards Program",
-        "clue": "Sumatra'nın kuzey ucunda yer alan ve 2004 Mw 9.1 Hint Okyanusu tsunamisini tetikleyen dalma-batma çukuru.",
-        "fact": "2004 depremindeki fay kırılması Sunda Çukuru boyunca kuzeye doğru yaklaşık 1.300 km ilerlemiştir.",
-        "maxToleranceKm": 300
+        "clue": "Güneydoğu Asya'daki Endonezya'nın en kuzeybatı adası olan Sumatra'nın uç noktası (2004 Hint Okyanusu tsunamisinin merkezi).",
+        "fact": "2004 depremindeki fay kırılması deniz tabanında yaklaşık 1.300 km boyunca ilerlemiştir.",
+        "maxToleranceKm": 450
       }
     },
     {
@@ -210,14 +210,14 @@
       "geometry": { "type": "Point", "coordinates": [35.4444, 30.3285] },
       "properties": {
         "id": "L3-04",
-        "name": "Petra (Ölü Deniz Rift Zonu)",
+        "name": "Petra Antik Kenti (Ürdün)",
         "category": "landmark",
         "level": 3,
-        "region": "Orta Doğu",
+        "region": "Orta Doğu · Ürdün",
         "source": "UNESCO World Heritage Centre",
-        "clue": "Güney Ürdün'de, Ölü Deniz Transform Fayı'nın doğu kenarında gül rengi kumtaşı kayalara oyulmuş antik Nebati kenti.",
+        "clue": "Orta Doğu'da, Kızıldeniz'in kuzey ucuna çok yakın, Ürdün'ün güneyinde kayalara oyulmuş dünyaca ünlü antik kent.",
         "fact": "Petra'nın gelişmiş su kanalları ve baraj ağı çöl ikliminde büyük bir kentin yaşamasını sağlamıştır.",
-        "maxToleranceKm": 300
+        "maxToleranceKm": 450
       }
     },
     {
@@ -225,14 +225,14 @@
       "geometry": { "type": "Point", "coordinates": [37.3556, -3.0674] },
       "properties": {
         "id": "L3-05",
-        "name": "Kilimanjaro Dağı (Doğu Afrika Rifti)",
+        "name": "Kilimanjaro Dağı (Tanzanya – Kenya)",
         "category": "seismic",
         "level": 3,
-        "region": "Doğu Afrika",
+        "region": "Doğu Afrika · Tanzanya – Kenya Sınırı",
         "source": "USGS & UNESCO World Heritage Centre",
-        "clue": "Tanzanya–Kenya sınırı yakınında, Doğu Afrika Rift Sistemi'nin doğu kolu boyunca yükselen Afrika'nın en yüksek volkanik zirvesi.",
+        "clue": "Doğu Afrika'da, Ekvator çizgisinin hemen güneyinde Tanzanya ile Kenya sınırında yükselen Afrika'nın en yüksek volkanik dağı.",
         "fact": "Doğu Afrika Rifti, Afrika Levhası'nı yavaşça ikiye ayıran aktif bir kıtasal yarılma bölgesidir.",
-        "maxToleranceKm": 300
+        "maxToleranceKm": 450
       }
     }
   ]

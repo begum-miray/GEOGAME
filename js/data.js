@@ -1,6 +1,6 @@
 // Open GeoJSON dataset loader and progressive mission deck builder
 
-const DATASET_URL = "data/missions.geojson";
+const DATASET_URL = "data/missions.geojson?v=3";
 
 function shuffleArray(items) {
   const copy = [...items];
