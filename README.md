@@ -14,7 +14,7 @@ The idea is simple and fun: when the page opens, an animated welcome guide intro
 
 ### Functional Requirements
 1. **Turkey-Focused Interactive Map:** Render a responsive Leaflet map centered and bounded on Turkey (`[39.05, 35.25]`, zoom `6`) using a clean white label-free basemap (Esri World Light Gray Base), with options to switch to Esri Physical Relief or OpenStreetMap and reset back to Turkey anytime.
-2. **Animated Welcome & How-to-Play Screen:** Greet the player on load with a bouncing map-pin animation, staggered rule cards (*Nasıl Oynanır?*), and a header Help button to reopen the guide anytime.
+2. **Animated Turkey Map Welcome Screen:** Greet the player on load with a glassmorphism intro card featuring an animated SVG Turkey silhouette (`drawTurkey`), a radar scan sweep, 7 bouncing city pins, and a smooth Leaflet `flyTo` zoom-in onto Turkey, plus a floating Help (`❓`) button to reopen it anytime.
 3. **Open Turkey GeoJSON Dataset:** Load 15 curated Turkish locations asynchronously from `data/missions.geojson` (RFC 7946 `FeatureCollection`) covering all 7 regions of Turkey (cultural landmarks, natural wonders, and seismic/volcanic zones).
 4. **Progressive Difficulty & Haversine Scoring:** Play 10 rounds across 3 levels (Easy → Medium → Hard) with shrinking tolerance radii (`220 km → 140 km → 90 km`), scoring each guess based on Haversine distance, speed, and consecutive hit streaks.
 5. **Modern Glassmorphism UI & Interactive Animations:** Full-screen `100vw × 100vh` map with translucent glass HUD cards (`backdrop-filter: blur`), `Space Grotesk` + `Inter` typography, green pulse & floating `+points` pop-up on hits, red shake feedback on misses, shrinking heart-loss animations, 10-second urgent red timer pulse, and smooth modal fade/scale transitions.
@@ -48,7 +48,7 @@ Each game selects and shuffles **10 rounds** from the 15-feature Turkey GeoJSON 
 | **Seviye 2 · Orta (Medium)** | 3 | Kuzey Anadolu Fayı (İzmit), Pamukkale, Sümela, Erciyes, Van Gölü | **140 km** |
 | **Seviye 3 · Zor (Hard)** | 3 | Göbeklitepe, Ağrı Dağı, Nemrut Dağı, Doğu Anadolu Fayı, Salda Gölü | **90 km** |
 
-A 10-segment progress bar at the top of the left panel shows your live progress across all 10 questions (blue = active, green = hit, orange = miss).
+A 10-segment progress bar at the top of the floating bottom mission dock shows your live progress across all 10 questions (pink = active, green = hit, orange = miss).
 
 ### Number of Lives
 Players start with **4 lives (`♥♥♥♥`)**. Clicking outside the target's allowed tolerance radius removes 1 life and resets the hit streak. Losing all 4 lives ends the round and opens the Chart.js summary.
@@ -85,7 +85,7 @@ When your click lands inside the target's tolerance circle (`distanceKm <= maxTo
 ### Three Implemented Event Handlers
 1. **Map `mousemove` Handler (`js/main.js`):** Tracks pointer movement across Turkey and updates `#coord-readout` with live latitude and longitude.
 2. **Map `click` Handler (`js/main.js`):** Submits the clicked coordinate, pauses the timer, runs `gameEngine.evaluateGuess()`, draws animated radar rings and the dashed distance line, triggers confetti/toast animations, and updates the HUD.
-3. **UI `click` & `keydown` Handlers (`js/main.js`):** Handles all 3D action buttons (`#btn-start`, `#btn-next`, `#btn-help`, `#btn-analytics`, `#btn-recenter`, `#btn-basemap`), modal dismissal, and keyboard shortcuts (`Enter`/`Space` for next question, `Escape` to close modals).
+3. **UI `click` & `keydown` Handlers (`js/main.js`):** Handles the glassmorphism floating tool buttons (`#btn-help`, `#btn-recenter`, `#btn-basemap`), mission action buttons (`#btn-start`, `#btn-next`, `#btn-analytics`), modal dismissal, and keyboard shortcuts (`Enter`/`Space` for next question, `Escape` to close modals).
 
 ### How I Benefited from Closures
 I organized the JavaScript into four factory-function modules that use **closures** to protect internal state instead of using global variables:
@@ -96,7 +96,7 @@ I organized the JavaScript into four factory-function modules that use **closure
 
 ### How I Interacted with the DOM
 - **Dynamic HUD & Progress Stepper:** Updates `#hud-round`, `#hud-timer`, `#hud-score`, `#hud-lives`, `#hud-highscore`, `#timer-progress-fill` width, and generates the 10-dot `#round-stepper` using `document.createElement("span")`.
-- **In-Game Animations & Confetti:** Dynamically spawns and cleans up animated `.confetti-piece` elements inside `#confetti-layer`, shows floating `#map-toast` messages, updates `#feedback-box`, and triggers CSS keyframe animations (`score-pop`, `panel-shake`).
+- **In-Game Animations & Confetti:** Dynamically spawns `.floating-score-pop` (`+puan`) badges above `#hud-score`, renders animated `.heart-icon` / `.heart-lost` hearts inside `#hud-lives`, spawns `.confetti-piece` bursts in `#confetti-layer`, shows `#map-toast` notifications, and triggers CSS keyframe classes (`panel-hit-glow`, `panel-miss-flash`, `score-pop`, `card-enter`).
 - **Modals & Chart Canvas:** Manages `#welcome-modal` and `#analytics-modal` visibility/`aria-hidden` states, updates KPI cards, and renders Chart.js onto `<canvas id="performance-chart">`.
 
 ---
@@ -107,14 +107,14 @@ I organized the JavaScript into four factory-function modules that use **closure
 GEOGAME/
 ├── index.html                        # Main HTML5 entry point (GitHub Pages)
 ├── css/
-│   └── style.css                     # Pure white playful UI, 3D buttons & animations
+│   └── style.css                     # Full-screen glassmorphism HUD & CSS @keyframes animations
 ├── js/
 │   ├── data.js                       # Async GeoJSON loader & level-based shuffler
 │   ├── game.js                       # Closure-based game engine, Haversine math & localStorage
-│   ├── timer.js                      # Closure-based 60s timer & response-time tracker
+│   ├── timer.js                      # Closure-based 2-minute (120s) timer & response tracker
 │   ├── map.js                        # Turkey-centered Leaflet controller & radar overlays
 │   ├── analytics.js                  # Chart.js post-game spatial accuracy modal
-│   └── main.js                       # DOM updates, confetti/toast animations & event handlers
+│   └── main.js                       # DOM updates, floating score/heart/confetti animations & events
 ├── data/
 │   └── missions.geojson              # 15 Turkish cultural, natural & seismic GeoJSON points
 └── assets/
