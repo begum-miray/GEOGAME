@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hudRound = document.getElementById("hud-round");
   const hudTimer = document.getElementById("hud-timer");
   const hudScore = document.getElementById("hud-score");
+  const scoreFloatAnchor = document.getElementById("score-float-anchor");
   const hudLives = document.getElementById("hud-lives");
   const hudHighScore = document.getElementById("hud-highscore");
   const timerProgressFill = document.getElementById("timer-progress-fill");
@@ -66,6 +67,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let missionCatalog = [];
   let toastTimeout = null;
+  let previousLives = 4;
+
+  function spawnFloatingScore(points) {
+    if (!scoreFloatAnchor || points <= 0) return;
+    const badge = document.createElement("span");
+    badge.className = "floating-score-pop";
+    badge.textContent = `+${points.toLocaleString("tr-TR")}`;
+    scoreFloatAnchor.appendChild(badge);
+    setTimeout(() => badge.remove(), 1200);
+  }
 
   function openWelcomeModal() {
     welcomeModal.classList.remove("hidden");
@@ -104,9 +115,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderLives(lives, maxLives) {
-    const filled = "♥".repeat(lives);
-    const empty = "♡".repeat(Math.max(0, maxLives - lives));
-    hudLives.textContent = filled + empty;
+    hudLives.innerHTML = "";
+    for (let i = 0; i < maxLives; i += 1) {
+      const heart = document.createElement("span");
+      heart.className = "heart-icon";
+      if (i < lives) {
+        heart.textContent = "♥";
+      } else {
+        heart.textContent = "♡";
+        heart.classList.add("heart-empty");
+        if (i === lives && lives < previousLives) {
+          heart.classList.add("heart-lost");
+        }
+      }
+      hudLives.appendChild(heart);
+    }
+    previousLives = lives;
     hudLives.setAttribute("aria-label", `${lives} can kaldı`);
   }
 
@@ -140,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const ratio = Math.max(0, Math.min(100, (remainingSeconds / totalSeconds) * 100));
     timerProgressFill.style.width = `${ratio}%`;
 
-    const isUrgent = remainingSeconds > 0 && remainingSeconds <= 15;
+    const isUrgent = remainingSeconds > 0 && remainingSeconds <= 10;
     hudTimer.classList.toggle("urgent", isUrgent);
     timerProgressFill.classList.toggle("urgent", isUrgent);
   }
@@ -271,6 +295,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (record.isHit) {
       triggerAnimation(hudScore, "score-pop");
+      triggerAnimation(missionPanel, "panel-hit-glow");
+      spawnFloatingScore(record.points);
       launchConfetti(18);
       showMapToast(`🎯 Süper! +${record.points.toLocaleString("tr-TR")} puan`);
 
@@ -291,7 +317,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         `(+${record.points.toLocaleString("tr-TR")} puan${bonusText})<br/>` +
         `<span class="mission-fact">💡 ${target.fact}</span>`;
     } else {
-      triggerAnimation(missionPanel, "panel-shake");
+      triggerAnimation(missionPanel, "panel-miss-flash");
       showMapToast(`😅 ${record.distanceKm.toLocaleString("tr-TR")} km uzakta (-1 can)`, true);
       feedbackBox.className = "feedback-box miss";
       feedbackBox.innerHTML =

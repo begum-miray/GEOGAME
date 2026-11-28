@@ -1,13 +1,17 @@
-/* Türkiye Harita Avı — Tam Ekran Yüzen Ada (Floating-Island) Açık Pembe & Animasyonlu Tema */
+/* Türkiye Harita Avı — Modern Glassmorphism HUD & Akıcı Animasyonlar */
 :root {
   --bg-white: #ffffff;
   --bg-blush: #fff7fa;
   --bg-pink-soft: #fdf2f8;
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-bg-strong: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(244, 114, 182, 0.34);
+  --glass-shadow: 0 12px 36px rgba(15, 23, 42, 0.1), 0 4px 14px rgba(236, 72, 153, 0.08);
   --border-light: #fbcfe8;
   --border-medium: #f9a8d4;
-  --text-main: #3b1d2e;
-  --text-soft: #6b4258;
-  --text-muted: #9d6b84;
+  --text-main: #1f1622;
+  --text-soft: #4b3847;
+  --text-muted: #7c6273;
   --pink: #ec4899;
   --pink-dark: #be185d;
   --green: #10b981;
@@ -15,7 +19,7 @@
   --yellow: #f59e0b;
   --yellow-dark: #d97706;
   --orange: #f97316;
-  --red: #e11d48;
+  --red: #dc2626;
 }
 
 *,
@@ -30,14 +34,24 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.45;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
   color: var(--text-main);
   background-color: var(--bg-blush);
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Tam Ekran Harita Sahnesi */
+h1,
+h2,
+h3,
+.hud-value,
+.stat-value,
+.btn {
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+
+/* Tam Ekran Harita Sahnesi (100vw x 100vh) */
 #map-wrapper {
   position: relative;
   width: 100vw;
@@ -58,197 +72,251 @@ body {
   cursor: crosshair;
 }
 
-/* Leaflet zoom kontrollerini sol üste zarifçe al */
 .leaflet-top.leaflet-left {
-  top: 90px;
-  left: 14px;
+  top: 94px;
+  left: 16px;
 }
 
-/* Yüzen Üst HUD Adası */
+/* Yüzen Üst Glassmorphism HUD Adası */
 .floating-hud {
   position: absolute;
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  width: min(860px, calc(100vw - 150px));
-  padding: 0.55rem 1rem 0.7rem;
+  width: min(880px, calc(100vw - 140px));
+  padding: 0.6rem 1.15rem 0.78rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border: 2px solid var(--border-light);
-  border-radius: 26px;
-  box-shadow: 0 10px 28px rgba(236, 72, 153, 0.14);
-  overflow: hidden;
-  animation: slideDownFade 0.6s cubic-bezier(0.22, 1.2, 0.36, 1);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  box-shadow: var(--glass-shadow);
+  overflow: visible;
+  animation: slideDownFade 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .brand-icon {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   display: inline-block;
-  animation: gentleBounce 2.2s ease-in-out infinite;
+  animation: gentleBounce 2.4s ease-in-out infinite;
 }
 
 .brand h1 {
   font-size: 1.08rem;
-  font-weight: 900;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-main);
   line-height: 1.15;
 }
 
 .brand-subtitle {
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text-muted);
 }
 
 .hud-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.42rem;
+  gap: 0.45rem;
 }
 
 .hud-pill {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 68px;
-  padding: 0.22rem 0.65rem;
-  background-color: var(--bg-blush);
-  border: 2px solid var(--border-light);
-  border-radius: 16px;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease;
+  min-width: 72px;
+  padding: 0.25rem 0.7rem;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(244, 114, 182, 0.26);
+  border-radius: 14px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hud-pill:hover {
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-2px);
   border-color: var(--pink);
+  box-shadow: 0 6px 14px rgba(236, 72, 153, 0.12);
 }
 
 .hud-label {
-  font-size: 0.62rem;
-  font-weight: 800;
+  font-size: 0.6rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
 }
 
 .hud-value {
-  font-size: 0.92rem;
-  font-weight: 900;
+  font-size: 0.96rem;
+  font-weight: 700;
   color: var(--text-main);
+}
+
+/* "+puan" Yukarı Süzülme Animasyonu */
+.score-float-anchor {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1200;
+}
+
+.floating-score-pop {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  background: rgba(240, 253, 244, 0.96);
+  border: 1px solid #86efac;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.22);
+  animation: floatScoreUp 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 #hud-timer {
   color: var(--pink-dark);
+  transition: color 0.2s ease;
 }
 
 #hud-timer.urgent {
   color: var(--red);
-  animation: timerUrgent 0.65s ease-in-out infinite;
+  animation: timerUrgent 0.7s ease-in-out infinite;
 }
 
 #hud-timer.bonus-flash {
   color: var(--green-dark);
 }
 
+/* Can (Kalp) İkonları ve Kayıp Animasyonu */
 #hud-lives {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   color: #e11d48;
-  letter-spacing: 0.06em;
-  animation: heartBeat 2.4s ease-in-out infinite;
 }
 
-/* HUD Altındaki İnce Zaman Çubuğu */
+.heart-icon {
+  display: inline-block;
+  font-size: 0.95rem;
+  transition: transform 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+.heart-icon.heart-empty {
+  color: #d1d5db;
+  opacity: 0.65;
+}
+
+.heart-icon.heart-lost {
+  animation: heartFadeShrink 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* HUD Altı Zaman Çubuğu */
 #timer-progress-bar {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 14px;
+  right: 14px;
   bottom: 0;
-  height: 5px;
-  background-color: #fce7f3;
+  height: 4px;
+  border-radius: 999px;
+  background-color: rgba(244, 114, 182, 0.18);
+  overflow: hidden;
 }
 
 #timer-progress-fill {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, #f472b6, #ec4899, #db2777);
-  transition: width 0.35s linear;
+  transition: width 0.35s linear, background 0.25s ease;
 }
 
 #timer-progress-fill.urgent {
-  background: linear-gradient(90deg, #f97316, #e11d48);
+  background: linear-gradient(90deg, #f97316, #dc2626);
 }
 
-/* Sağ Üst Yuvarlak Harita Araçları */
+/* Sağ Üst Glassmorphism Yuvarlak Harita Araçları */
 .floating-tools {
   position: absolute;
-  top: 16px;
+  top: 14px;
   right: 16px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .icon-fab {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 2px solid var(--border-medium);
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 0 #fbcfe8, 0 8px 16px rgba(236, 72, 153, 0.14);
-  font-size: 1.2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--glass-shadow);
+  font-size: 1.15rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .icon-fab:hover {
-  transform: translateY(-3px) rotate(-8deg) scale(1.08);
+  transform: translateY(-2px) scale(1.06);
   background-color: var(--bg-pink-soft);
   border-color: var(--pink);
 }
 
 .icon-fab:active {
-  transform: translateY(2px) scale(0.95);
-  box-shadow: 0 1px 0 #fbcfe8;
+  transform: scale(0.94);
 }
 
 /* Harita Lejantı & Koordinat Rozeti */
 .map-legend {
   position: absolute;
-  top: 186px;
+  top: 176px;
   right: 16px;
   z-index: 800;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 800;
+  gap: 0.32rem;
+  padding: 0.55rem 0.78rem;
+  font-size: 0.74rem;
+  font-weight: 600;
   color: var(--text-main);
-  background-color: rgba(255, 255, 255, 0.92);
-  border: 2px solid var(--border-light);
-  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
   pointer-events: none;
 }
 
 .legend-item {
   display: inline-flex;
   align-items: center;
-  gap: 0.38rem;
+  gap: 0.4rem;
 }
 
 .legend-dot {
@@ -267,17 +335,21 @@ body {
   right: 16px;
   bottom: 24px;
   z-index: 800;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.78rem;
-  font-weight: 800;
+  padding: 0.36rem 0.85rem;
+  font-family: "Space Grotesk", monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
   color: var(--text-main);
-  background-color: rgba(255, 255, 255, 0.94);
-  border: 2px solid var(--border-light);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
   pointer-events: none;
 }
 
-/* Yüzen Alt Görev Kartı (Floating Dock) */
+/* Yüzen Alt Glassmorphism Görev Kartı (Floating Dock) */
 .floating-dock {
   position: absolute;
   left: 50%;
@@ -285,16 +357,30 @@ body {
   transform: translateX(-50%);
   z-index: 950;
   width: min(760px, calc(100vw - 32px));
-  padding: 0.9rem 1.15rem;
+  padding: 0.95rem 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
-  border: 2px solid var(--border-medium);
-  border-radius: 26px;
-  box-shadow: 0 6px 0 #fce7f3, 0 18px 38px rgba(236, 72, 153, 0.18);
-  animation: slideUpFade 0.65s cubic-bezier(0.22, 1.2, 0.36, 1);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Doğru / Yanlış Cevap Kart Vurgu Animasyonları */
+.floating-dock.panel-hit-glow {
+  border-color: var(--green);
+  animation: hitGlowPulse 0.9s ease;
+}
+
+.floating-dock.panel-miss-flash {
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.16), var(--glass-shadow);
+  animation: panelShake 0.45s ease;
 }
 
 .dock-top {
@@ -314,30 +400,31 @@ body {
 
 .badge {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.2rem 0.72rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.22rem 0.72rem;
   border-radius: 999px;
   background-color: var(--bg-pink-soft);
   color: var(--pink-dark);
-  border: 2px solid var(--border-light);
+  border: 1px solid var(--border-light);
 }
 
 .category-tag {
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: #db2777;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .streak-pill {
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: 0.74rem;
+  font-weight: 700;
   padding: 0.18rem 0.62rem;
   border-radius: 999px;
   color: #92400e;
   background-color: #fef3c7;
-  border: 2px solid #fcd34d;
+  border: 1px solid #fcd34d;
   animation: popIn 0.3s ease;
 }
 
@@ -348,7 +435,7 @@ body {
 }
 
 .step-dot {
-  height: 8px;
+  height: 7px;
   border-radius: 999px;
   background-color: #fce7f3;
   transition: background-color 0.25s ease, transform 0.2s ease;
@@ -375,32 +462,33 @@ body {
 }
 
 .clue-area.card-enter {
-  animation: cardSlideIn 0.42s cubic-bezier(0.22, 1.2, 0.36, 1);
+  animation: cardSlideIn 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .title-meta-row {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.4rem 0.75rem;
-  margin-bottom: 0.2rem;
+  gap: 0.35rem 0.75rem;
+  margin-bottom: 0.22rem;
 }
 
 #mission-title {
   font-size: 1.08rem;
-  font-weight: 900;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-main);
 }
 
 .mission-meta {
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--pink-dark);
 }
 
 .mission-clue {
-  font-size: 0.94rem;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 500;
   color: var(--text-soft);
 }
 
@@ -412,32 +500,32 @@ body {
 }
 
 .feedback-box {
-  padding: 0.6rem 0.9rem;
+  padding: 0.62rem 0.92rem;
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-soft);
-  background-color: var(--bg-blush);
-  border: 2px solid var(--border-light);
+  background-color: rgba(253, 242, 248, 0.65);
+  border: 1px solid rgba(244, 114, 182, 0.22);
   border-radius: 14px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .feedback-box.hit {
   border-color: #86efac;
-  background-color: #f0fdf4;
+  background-color: rgba(240, 253, 244, 0.92);
   color: #166534;
 }
 
 .feedback-box.miss {
-  border-color: #fdba74;
-  background-color: #fff7ed;
-  color: #9a3412;
+  border-color: #fca5a5;
+  background-color: rgba(254, 242, 242, 0.94);
+  color: #991b1b;
 }
 
 .mission-fact {
   display: inline-block;
   margin-top: 0.25rem;
-  font-size: 0.81rem;
-  font-weight: 600;
+  font-size: 0.8rem;
   color: var(--text-soft);
 }
 
@@ -445,7 +533,7 @@ body {
   display: none !important;
 }
 
-/* Animasyonlu Kapsül Butonlar */
+/* Modern Zarif Mikro-Etkileşimli Butonlar */
 .btn {
   position: relative;
   overflow: hidden;
@@ -453,32 +541,31 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.72rem 1.25rem;
-  font-family: inherit;
-  font-size: 0.92rem;
-  font-weight: 800;
+  padding: 0.72rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
   border-radius: 999px;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   white-space: nowrap;
-  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .btn-ico {
   display: inline-block;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.03);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .btn:hover:not(:disabled) .btn-ico {
-  transform: rotate(-14deg) scale(1.22);
+  transform: rotate(-10deg) scale(1.18);
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(2px) scale(0.97);
+  transform: translateY(1px) scale(0.98);
 }
 
 .btn:disabled {
@@ -487,19 +574,19 @@ body {
 }
 
 .btn-lg {
-  padding: 0.88rem 1.75rem;
-  font-size: 1.04rem;
+  padding: 0.86rem 1.75rem;
+  font-size: 1rem;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #f472b6 0%, #ec4899 55%, #db2777 100%);
   color: #ffffff;
-  border-color: var(--pink-dark);
-  box-shadow: 0 5px 0 var(--pink-dark), 0 8px 20px rgba(236, 72, 153, 0.3);
+  border-color: rgba(190, 24, 93, 0.4);
+  box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
 }
 
-.btn-primary:active:not(:disabled) {
-  box-shadow: 0 1px 0 var(--pink-dark);
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 12px 26px rgba(236, 72, 153, 0.42);
 }
 
 .btn-shimmer::after {
@@ -507,56 +594,49 @@ body {
   position: absolute;
   top: 0;
   left: -120%;
-  width: 65%;
+  width: 60%;
   height: 100%;
-  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.45) 50%, transparent 80%);
-  animation: btnShimmer 2.8s ease-in-out infinite;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.42) 50%, transparent 80%);
+  animation: btnShimmer 3s ease-in-out infinite;
 }
 
 .btn-green {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   color: #ffffff;
-  border-color: var(--green-dark);
-  box-shadow: 0 5px 0 var(--green-dark), 0 8px 18px rgba(16, 185, 129, 0.28);
-}
-
-.btn-green:active {
-  box-shadow: 0 1px 0 var(--green-dark);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.28);
 }
 
 .btn-pulse {
-  animation: softBtnPulse 1.5s ease-in-out infinite;
+  animation: softBtnPulse 1.6s ease-in-out infinite;
 }
 
 .btn-yellow {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #ffffff;
-  border-color: var(--yellow-dark);
-  box-shadow: 0 5px 0 var(--yellow-dark);
+  box-shadow: 0 8px 18px rgba(245, 158, 11, 0.25);
 }
 
 .btn-outline {
-  background-color: var(--bg-white);
+  background-color: rgba(255, 255, 255, 0.9);
   color: var(--text-main);
-  border: 2px dashed var(--border-medium);
-  box-shadow: 0 4px 0 #fce7f3;
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .btn-outline:hover {
-  border-style: solid;
   border-color: var(--pink);
   color: var(--pink-dark);
   background-color: var(--bg-pink-soft);
 }
 
 .kbd-hint {
-  font-size: 0.72rem;
-  padding: 0.08rem 0.4rem;
+  font-size: 0.7rem;
+  padding: 0.08rem 0.38rem;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.26);
+  background-color: rgba(255, 255, 255, 0.24);
 }
 
-/* Giriş Türkiye Haritası Animasyon Ekranı */
+/* Giriş Türkiye Haritası Animasyonlu Glassmorphism Kartı */
 .intro-overlay {
   position: fixed;
   inset: 0;
@@ -565,14 +645,16 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: radial-gradient(circle at top, rgba(253, 242, 248, 0.78), rgba(255, 255, 255, 0.62));
-  backdrop-filter: blur(7px);
+  background: rgba(253, 242, 248, 0.56);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: overlayFadeIn 0.3s ease;
 }
 
 .intro-card {
   position: relative;
   width: min(720px, 100%);
-  max-height: 94vh;
+  max-height: 92vh;
   overflow-y: auto;
   padding: 1.5rem 1.75rem 1.75rem;
   display: flex;
@@ -580,20 +662,21 @@ body {
   align-items: center;
   text-align: center;
   gap: 0.85rem;
-  background: rgba(255, 255, 255, 0.96);
-  border: 2.5px solid var(--border-medium);
-  border-radius: 30px;
-  box-shadow: 0 8px 0 #fce7f3, 0 24px 60px rgba(236, 72, 153, 0.22);
-  animation: modalBounceIn 0.55s cubic-bezier(0.22, 1.25, 0.36, 1);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.14), 0 8px 24px rgba(236, 72, 153, 0.14);
+  animation: modalFadeScale 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .turkey-intro-stage {
   width: 100%;
   max-width: 520px;
   padding: 0.35rem 0.5rem;
-  border-radius: 22px;
+  border-radius: 20px;
   background: radial-gradient(circle at center, #fff7fa 0%, #ffffff 78%);
-  border: 2px dashed var(--border-light);
+  border: 1px solid var(--border-light);
 }
 
 .turkey-svg {
@@ -605,7 +688,7 @@ body {
 .turkey-outline {
   stroke-dasharray: 1800;
   stroke-dashoffset: 1800;
-  animation: drawTurkey 1.9s ease-out forwards;
+  animation: drawTurkey 1.8s ease-out forwards;
 }
 
 .radar-scan-line {
@@ -614,16 +697,16 @@ body {
 
 .intro-pin {
   opacity: 0;
-  animation: pinDropIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: pinDropIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.pin-1 { animation-delay: 0.45s; }
-.pin-2 { animation-delay: 0.65s; }
-.pin-3 { animation-delay: 0.85s; }
-.pin-4 { animation-delay: 1.05s; }
-.pin-5 { animation-delay: 1.25s; }
-.pin-6 { animation-delay: 1.45s; }
-.pin-7 { animation-delay: 1.65s; }
+.pin-1 { animation-delay: 0.4s; }
+.pin-2 { animation-delay: 0.6s; }
+.pin-3 { animation-delay: 0.8s; }
+.pin-4 { animation-delay: 1.0s; }
+.pin-5 { animation-delay: 1.2s; }
+.pin-6 { animation-delay: 1.4s; }
+.pin-7 { animation-delay: 1.6s; }
 
 .pin-wave {
   fill: none;
@@ -633,9 +716,9 @@ body {
 }
 
 .pin-label {
-  font-family: "Nunito", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   fill: var(--text-main);
 }
 
@@ -648,13 +731,13 @@ body {
 
 .welcome-heading {
   font-size: 1.5rem;
-  font-weight: 900;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-main);
 }
 
 .modal-subtitle {
-  font-size: 0.94rem;
-  font-weight: 700;
+  font-size: 0.92rem;
   color: var(--text-soft);
   max-width: 520px;
 }
@@ -668,21 +751,21 @@ body {
 }
 
 .rule-pill {
-  padding: 0.38rem 0.85rem;
-  font-size: 0.83rem;
-  font-weight: 800;
+  padding: 0.36rem 0.82rem;
+  font-size: 0.81rem;
+  font-weight: 600;
   color: var(--text-main);
   background-color: var(--bg-blush);
-  border: 2px solid var(--border-light);
+  border: 1px solid var(--border-light);
   border-radius: 999px;
   opacity: 0;
-  animation: stepFadeUp 0.45s ease forwards;
+  animation: stepFadeUp 0.4s ease forwards;
 }
 
-.pill-anim-1 { animation-delay: 0.35s; }
-.pill-anim-2 { animation-delay: 0.5s; }
-.pill-anim-3 { animation-delay: 0.65s; }
-.pill-anim-4 { animation-delay: 0.8s; }
+.pill-anim-1 { animation-delay: 0.3s; }
+.pill-anim-2 { animation-delay: 0.45s; }
+.pill-anim-3 { animation-delay: 0.6s; }
+.pill-anim-4 { animation-delay: 0.75s; }
 
 /* Harita Üstü Bildirim, Konfeti & Radar Pinleri */
 .map-toast {
@@ -691,21 +774,24 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1050;
-  padding: 0.55rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 900;
+  padding: 0.52rem 1.2rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.96rem;
+  font-weight: 700;
   border-radius: 999px;
-  background-color: var(--bg-white);
-  border: 2.5px solid var(--green);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--green);
   color: var(--green-dark);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 10px 26px rgba(16, 185, 129, 0.2);
   pointer-events: none;
   animation: toastPop 1.45s ease forwards;
 }
 
 .map-toast.miss-toast {
-  border-color: var(--orange);
-  color: #c2410c;
+  border-color: var(--red);
+  color: var(--red);
+  box-shadow: 0 10px 26px rgba(220, 38, 38, 0.16);
 }
 
 .confetti-layer {
@@ -719,8 +805,8 @@ body {
 .confetti-piece {
   position: absolute;
   top: -12px;
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   border-radius: 3px;
   animation: confettiFall 1.55s ease-out forwards;
 }
@@ -771,20 +857,20 @@ body {
 .animated-guess-line { animation: dashFlow 1.1s linear infinite; }
 
 .distance-tooltip {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.96);
   color: var(--text-main);
-  border: 2px solid var(--border-medium);
+  border: 1px solid var(--border-medium);
   border-radius: 999px;
-  font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 800;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
   padding: 0.15rem 0.6rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
 }
 
 .score-pop { animation: scorePop 0.45s ease; }
-.panel-shake { animation: panelShake 0.4s ease; }
 
-/* Oyun Sonu Chart.js Modalı */
+/* Oyun Sonu Chart.js Glassmorphism Modalı */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -793,8 +879,10 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background-color: rgba(59, 29, 46, 0.35);
-  backdrop-filter: blur(5px);
+  background-color: rgba(31, 22, 34, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: overlayFadeIn 0.25s ease;
 }
 
 .modal-card {
@@ -806,11 +894,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.05rem;
-  background-color: var(--bg-white);
-  border: 2.5px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
   border-radius: 26px;
-  box-shadow: 0 22px 55px rgba(59, 29, 46, 0.2);
-  animation: modalBounceIn 0.45s cubic-bezier(0.22, 1.25, 0.36, 1);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.2);
+  animation: modalFadeScale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .top-right-close {
@@ -828,7 +917,7 @@ body {
 
 .modal-header h2 {
   font-size: 1.32rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .modal-close {
@@ -838,9 +927,13 @@ body {
   font-size: 1.8rem;
   line-height: 1;
   cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
-.modal-close:hover { color: var(--text-main); }
+.modal-close:hover {
+  color: var(--text-main);
+  transform: scale(1.1);
+}
 
 .stats-grid {
   display: grid;
@@ -853,20 +946,21 @@ body {
   flex-direction: column;
   padding: 0.7rem 0.85rem;
   background-color: var(--bg-blush);
-  border: 2px solid var(--border-light);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
 }
 
 .stat-label {
-  font-size: 0.68rem;
-  font-weight: 800;
+  font-size: 0.66rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
 }
 
 .stat-value {
   font-size: 1.12rem;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--pink-dark);
 }
 
@@ -875,7 +969,7 @@ body {
   height: 270px;
   padding: 0.75rem;
   background-color: var(--bg-white);
-  border: 2px solid var(--border-light);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
 }
 
@@ -885,7 +979,7 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .modal-actions {
@@ -898,7 +992,35 @@ body {
   justify-content: center;
 }
 
-/* Animasyon Keyframe'leri */
+/* Performanslı CSS @keyframes */
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalFadeScale {
+  from { opacity: 0; transform: translateY(14px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes floatScoreUp {
+  0% { opacity: 0; transform: translate(-50%, 6px) scale(0.85); }
+  20% { opacity: 1; transform: translate(-50%, -4px) scale(1.06); }
+  100% { opacity: 0; transform: translate(-50%, -34px) scale(0.96); }
+}
+
+@keyframes hitGlowPulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45), var(--glass-shadow); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0), var(--glass-shadow); }
+  100% { box-shadow: var(--glass-shadow); }
+}
+
+@keyframes heartFadeShrink {
+  0% { transform: scale(1.25); color: #e11d48; opacity: 1; }
+  45% { transform: scale(0.45); color: #f87171; opacity: 0.35; }
+  100% { transform: scale(0.9); color: #d1d5db; opacity: 0.65; }
+}
+
 @keyframes drawTurkey {
   to { stroke-dashoffset: 0; }
 }
@@ -921,23 +1043,18 @@ body {
 }
 
 @keyframes slideDownFade {
-  0% { opacity: 0; transform: translate(-50%, -22px); }
+  0% { opacity: 0; transform: translate(-50%, -20px); }
   100% { opacity: 1; transform: translate(-50%, 0); }
 }
 
 @keyframes slideUpFade {
-  0% { opacity: 0; transform: translate(-50%, 26px); }
+  0% { opacity: 0; transform: translate(-50%, 24px); }
   100% { opacity: 1; transform: translate(-50%, 0); }
 }
 
 @keyframes gentleBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes modalBounceIn {
-  0% { opacity: 0; transform: translateY(20px) scale(0.92); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px); }
 }
 
 @keyframes stepFadeUp {
@@ -946,15 +1063,15 @@ body {
 }
 
 @keyframes popIn {
-  0% { transform: scale(0.7); opacity: 0; }
+  0% { transform: scale(0.75); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes toastPop {
-  0% { opacity: 0; transform: translate(-50%, 12px) scale(0.88); }
-  18% { opacity: 1; transform: translate(-50%, 0) scale(1.04); }
+  0% { opacity: 0; transform: translate(-50%, 12px) scale(0.9); }
+  18% { opacity: 1; transform: translate(-50%, 0) scale(1.03); }
   80% { opacity: 1; transform: translate(-50%, -4px) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -18px) scale(0.95); }
+  100% { opacity: 0; transform: translate(-50%, -18px) scale(0.96); }
 }
 
 @keyframes confettiFall {
@@ -973,7 +1090,7 @@ body {
 
 @keyframes scorePop {
   0% { transform: scale(1); color: var(--text-main); }
-  45% { transform: scale(1.28); color: var(--green-dark); }
+  45% { transform: scale(1.25); color: var(--green-dark); }
   100% { transform: scale(1); color: var(--text-main); }
 }
 
@@ -986,8 +1103,8 @@ body {
 }
 
 @keyframes timerUrgent {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.14); opacity: 0.78; }
 }
 
 @keyframes btnShimmer {
@@ -997,7 +1114,7 @@ body {
 
 @keyframes softBtnPulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  50% { transform: scale(1.035); }
 }
 
 @keyframes cardSlideIn {
@@ -1005,22 +1122,14 @@ body {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.14); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.1); }
-  70% { transform: scale(1); }
-}
-
-/* Mobil Uyum */
+/* Mobil & Tablet Uyum */
 @media (max-width: 780px) {
   .floating-hud {
     width: calc(100vw - 74px);
     left: 12px;
     transform: none;
     animation: none;
-    padding: 0.5rem 0.7rem 0.65rem;
+    padding: 0.5rem 0.75rem 0.65rem;
   }
 
   .brand-text { display: none; }
@@ -1037,5 +1146,10 @@ body {
 
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modal-actions {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

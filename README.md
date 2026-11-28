@@ -17,8 +17,8 @@ The idea is simple and fun: when the page opens, an animated welcome guide intro
 2. **Animated Welcome & How-to-Play Screen:** Greet the player on load with a bouncing map-pin animation, staggered rule cards (*Nasıl Oynanır?*), and a header Help button to reopen the guide anytime.
 3. **Open Turkey GeoJSON Dataset:** Load 15 curated Turkish locations asynchronously from `data/missions.geojson` (RFC 7946 `FeatureCollection`) covering all 7 regions of Turkey (cultural landmarks, natural wonders, and seismic/volcanic zones).
 4. **Progressive Difficulty & Haversine Scoring:** Play 10 rounds across 3 levels (Easy → Medium → Hard) with shrinking tolerance radii (`220 km → 140 km → 90 km`), scoring each guess based on Haversine distance, speed, and consecutive hit streaks.
-5. **Playful Game Animations & Tactile UI:** Include 3D pushable arcade-style buttons, radar pulse rings, animated dashed distance lines, floating score toasts, confetti bursts on accurate hits, and panel shake animations on misses.
-6. **Temporal Component & Persistence:** Run a 2-minute (120-second) countdown timer with a live progress bar, `+3s` precision time bonuses, an urgent final-15-second warning, and `localStorage` high-score saving.
+5. **Modern Glassmorphism UI & Interactive Animations:** Full-screen `100vw × 100vh` map with translucent glass HUD cards (`backdrop-filter: blur`), `Space Grotesk` + `Inter` typography, green pulse & floating `+points` pop-up on hits, red shake feedback on misses, shrinking heart-loss animations, 10-second urgent red timer pulse, and smooth modal fade/scale transitions.
+6. **Temporal Component & Persistence:** Run a 2-minute (120-second) countdown timer with a live progress bar, `+3s` precision time bonuses, an urgent final-10-second red pulse warning, and `localStorage` high-score saving.
 7. **Post-Game Spatial Analytics (Bonus):** Display an interactive **Chart.js** dual-axis debrief chart at the end of the game comparing each round's error distance (km) and points earned.
 
 ---
@@ -64,7 +64,7 @@ When your click lands inside the target's tolerance circle (`distanceKm <= maxTo
 - Every session runs on a **2-minute (120-second)** timer (`js/timer.js`), displayed in `M:SS` format in the top HUD (`Süre`) and as a shrinking bar across the screen.
 - After you click, the timer **pauses** while you look at the distance line and read the short geographic fact, then **resumes** as soon as you click *Sonraki Soru* (or press `Enter` / `Space`).
 - **Precision Time Bonus (`+3 sn`):** Clicking within the innermost **35%** of the target's tolerance circle awards `+3` extra seconds (up to 2:00).
-- In the last **15 seconds**, the timer turns red and pulses. When time hits `0:00`, `endByTimeout()` finishes the game and opens the analytics modal.
+- In the last **10 seconds**, the timer turns red and pulses. When time hits `0:00`, `endByTimeout()` finishes the game and opens the analytics modal.
 
 ---
 
