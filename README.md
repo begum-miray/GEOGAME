@@ -25,13 +25,13 @@ The idea is simple and fun: when the page opens, an animated welcome guide intro
 
 ## 2. Frontend Layout & Live Screenshots
 
-The interface is organized around a top HUD bar (`Tur`, `Süre`, `Puan`, `Can`, `Rekor`), a shrinking temporal progress bar, a pastel-pink mission & clue sidebar on the left, and a full-height Leaflet map centered on Turkey on the right.
+Instead of a traditional sidebar, the game uses a **full-screen floating-island map layout**: the Turkey map fills 100% of the viewport while a floating pastel-pink HUD bar sits at the top, round map tool buttons float on the top right, and a compact mission/clue dock floats at the bottom center. On startup, an animated SVG Turkey map draws its silhouette with a radar sweep and bouncing city pins while the live Leaflet map smoothly zooms into Turkey.
 
-**Animated Welcome & "Nasıl Oynanır?" Screen:**
+**Animated Turkey Map Welcome Screen:**
 
 ![Welcome and How to Play Screen](assets/images/screenshot-welcome.png)
 
-**Active Gameplay on the Turkey Map (Soft Pastel-Pink & White UI):**
+**Full-Screen Floating-Island Turkey Gameplay:**
 
 ![Active Turkey Map Gameplay](assets/images/screenshot-gameplay.png)
 

@@ -50,13 +50,18 @@ function createRadarIcon(variant) {
 function createMapController(containerId) {
   const containerEl = document.getElementById(containerId);
   const map = L.map(containerId, {
-    center: TURKEY_VIEW.center,
-    zoom: TURKEY_VIEW.zoom,
+    center: [38.5, 34.5],
+    zoom: 5,
     minZoom: 5,
     maxZoom: 12,
     maxBounds: TURKEY_BOUNDS,
     maxBoundsViscosity: 0.75,
   });
+
+  // Smooth zoom-in animation onto Turkey on initial page load
+  setTimeout(() => {
+    map.flyTo(TURKEY_VIEW.center, TURKEY_VIEW.zoom, { duration: 1.5 });
+  }, 250);
 
   let activeIndex = 0;
   let tileLayer = null;
